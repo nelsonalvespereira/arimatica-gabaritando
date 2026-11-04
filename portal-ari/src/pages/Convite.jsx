@@ -100,7 +100,7 @@ export default function Convite() {
         <div className="flex items-center justify-center gap-2.5 mb-6">
           <img src={logo} alt="" className="w-10 h-10 rounded-xl object-cover" />
           <span className="font-black tracking-wide">
-            Arimática <span className="text-brand-orange">GABARITANDO</span>
+            Arimática <span className="text-brand-orangeLight">GABARITANDO</span>
           </span>
         </div>
 
@@ -111,22 +111,22 @@ export default function Convite() {
             </div>
           ) : convite.situacao !== 'valido' ? (
             <div className="text-center space-y-4 py-4">
-              <div className="w-14 h-14 rounded-2xl bg-orange-500/10 text-brand-orange flex items-center justify-center mx-auto">
+              <div className="w-14 h-14 rounded-2xl bg-orange-500/10 text-brand-orangeLight flex items-center justify-center mx-auto">
                 <AlertCircle className="w-7 h-7" />
               </div>
               <h1 className="text-xl font-black">{AVISOS[convite.situacao]?.titulo || AVISOS.inexistente.titulo}</h1>
               <p className="text-sm text-slate-400">{AVISOS[convite.situacao]?.texto || AVISOS.inexistente.texto}</p>
-              <Link to="/login" className="inline-flex px-5 py-3 bg-brand-orange hover:bg-orange-600 rounded-xl text-sm font-bold">
+              <Link to="/login" className="inline-flex px-5 py-3 bg-brand-orange hover:bg-orange-800 rounded-xl text-sm font-bold">
                 Ir para o login
               </Link>
             </div>
           ) : (
             <>
-              <p className="text-xs font-bold uppercase tracking-wider text-brand-orange">Você foi convidado</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-brand-orangeLight">Você foi convidado</p>
               <h1 className="text-2xl font-black mt-1">Olá, {(convite.nome || 'aluno').split(' ')[0]}!</h1>
               <div className="mt-4 space-y-2">
                 <p className="flex items-center gap-2 text-sm text-slate-300">
-                  <GraduationCap className="w-4 h-4 text-brand-orange shrink-0" /> Turma: <strong className="text-white">{convite.turma || '—'}</strong>
+                  <GraduationCap className="w-4 h-4 text-brand-orangeLight shrink-0" /> Turma: <strong className="text-white">{convite.turma || '—'}</strong>
                 </p>
                 {convite.cortesia ? (
                   <p className="flex items-center gap-2 text-sm font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-3 py-2">
@@ -169,7 +169,7 @@ export default function Convite() {
                 <button
                   type="submit"
                   disabled={enviando}
-                  className="w-full py-3.5 bg-brand-orange hover:bg-orange-600 disabled:opacity-60 rounded-xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 bg-brand-orange hover:bg-orange-800 disabled:opacity-60 rounded-xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {enviando && <Loader2 className="w-4 h-4 animate-spin" />}
                   {modo === 'cadastro' ? 'Criar minha conta' : 'Entrar e usar o convite'}

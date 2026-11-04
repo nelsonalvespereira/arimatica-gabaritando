@@ -165,7 +165,7 @@ export default function Lives() {
                           {live.link_transmissao ? (
                             <Link 
                               to={`/live/${live.id}`}
-                              className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-orange-500/20"
+                              className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-orange-500/20"
                             >
                               <Radio className="w-4 h-4" /> Assistir ao Vivo
                             </Link>

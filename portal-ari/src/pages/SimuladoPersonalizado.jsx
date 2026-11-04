@@ -273,7 +273,7 @@ export default function SimuladoPersonalizado() {
                   <button
                     type="submit"
                     disabled={carregandoQuiz}
-                    className="w-full py-4 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="w-full py-4 bg-brand-orange hover:bg-orange-800 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {carregandoQuiz ? <Loader2 className="w-5 h-5 animate-spin" /> : <ArrowRight className="w-5 h-5" />}
                     {carregandoQuiz ? 'Gerando Simulado...' : 'Iniciar Simulado'}
@@ -366,7 +366,7 @@ export default function SimuladoPersonalizado() {
                   <button
                     onClick={confirmarRespostaAtual}
                     disabled={!respostasUsuario[questaoAtual.id]}
-                    className="px-6 py-3.5 bg-brand-orange hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all cursor-pointer shadow-lg"
+                    className="px-6 py-3.5 bg-brand-orange hover:bg-orange-800 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all cursor-pointer shadow-lg"
                   >
                     Confirmar Resposta
                   </button>
@@ -414,7 +414,7 @@ export default function SimuladoPersonalizado() {
               <div className="pt-2 flex flex-col gap-3">
                 <button
                   onClick={() => setEtapa('config')}
-                  className="w-full py-4 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-4 bg-brand-orange hover:bg-orange-800 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <RotateCcw className="w-5 h-5" /> Configurar Novo Simulado
                 </button>

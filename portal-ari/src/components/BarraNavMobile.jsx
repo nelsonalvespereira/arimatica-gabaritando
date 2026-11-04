@@ -26,7 +26,7 @@ function Botao({ ativo, icon: Icon, label }) {
         ativo ? 'bg-white/10 text-white' : 'text-slate-400 active:bg-white/5'
       }`}
     >
-      <Icon className={`w-[22px] h-[22px] ${ativo ? 'text-brand-orange' : ''}`} strokeWidth={ativo ? 2.4 : 2} />
+      <Icon className={`w-[22px] h-[22px] ${ativo ? 'text-brand-orangeLight' : ''}`} strokeWidth={ativo ? 2.4 : 2} />
       <span className={`text-[11px] leading-none ${ativo ? 'font-bold' : 'font-semibold'}`}>{label}</span>
     </span>
   );
@@ -97,7 +97,7 @@ export default function BarraNavMobile({ itens, maisItens, onSair }) {
                 >
                   {({ isActive }) => (
                     <>
-                      <Icon className={`w-6 h-6 ${isActive ? 'text-brand-orange' : ''}`} />
+                      <Icon className={`w-6 h-6 ${isActive ? 'text-brand-orangeLight' : ''}`} />
                       <span className="text-xs font-semibold leading-tight">{label}</span>
                     </>
                   )}

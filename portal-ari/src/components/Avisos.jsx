@@ -155,7 +155,7 @@ function JanelaConfirmar({ pergunta, responder }) {
             ref={confirmarRef}
             type="button"
             onClick={() => responder(true)}
-            className={`px-5 py-3 sm:py-2.5 rounded-xl text-sm font-bold text-white cursor-pointer ${perigo ? 'bg-red-600 hover:bg-red-700' : 'bg-brand-orange hover:bg-orange-600'}`}
+            className={`px-5 py-3 sm:py-2.5 rounded-xl text-sm font-bold text-white cursor-pointer ${perigo ? 'bg-red-600 hover:bg-red-700' : 'bg-brand-orange hover:bg-orange-800'}`}
           >
             {confirmarTexto}
           </button>

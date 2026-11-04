@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import RodapeLegal from '../components/RodapeLegal';
 import { ShieldCheck, Zap, Loader2, CheckCircle2, ArrowLeft, Timer, LogOut, LogIn } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
@@ -204,7 +205,7 @@ export default function Pagamento() {
       </div>
 
       <div ref={topoRef} className="max-w-4xl w-full text-center space-y-3 md:space-y-4 mb-8 md:mb-12">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-brand-orange border border-orange-500/20 text-xs font-bold uppercase tracking-wider">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 text-brand-orangeLight border border-orange-500/20 text-xs font-bold uppercase tracking-wider">
           <Zap className="w-3.5 h-3.5" /> {escolhendoPack ? 'Pack Avulso · Pagamento Único' : 'Assinatura Mensal Recorrente'}
         </div>
         <h1 className="text-2xl md:text-5xl font-black">
@@ -228,7 +229,7 @@ export default function Pagamento() {
           <span className="text-emerald-300 font-medium">
             Você tem pack ativo{packExpiraEm ? ` até ${packExpiraEm.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}` : ''}.
           </span>
-          <Link to="/packs" className="px-4 py-2 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-lg text-center">
+          <Link to="/packs" className="px-4 py-2 bg-brand-orange hover:bg-orange-800 text-white font-bold rounded-lg text-center">
             Meus packs
           </Link>
         </div>
@@ -240,7 +241,7 @@ export default function Pagamento() {
           <div className="flex gap-3">
             <Link
               to="/dashboard"
-              className="px-4 py-2 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-lg"
+              className="px-4 py-2 bg-brand-orange hover:bg-orange-800 text-white font-bold rounded-lg"
             >
               Ir para o painel
             </Link>
@@ -272,7 +273,7 @@ export default function Pagamento() {
           onErro={handleErroCheckout}
         />
       ) : loadingPlanos || loadingAuth ? (
-        <Loader2 className="w-8 h-8 animate-spin text-brand-orange" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-orangeLight" />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
           {assinaturas.map((plano) => (
@@ -289,16 +290,16 @@ export default function Pagamento() {
                 <p className="text-xs text-slate-400 leading-relaxed">{plano.descricao}</p>
                 <ul className="space-y-2.5 pt-4 border-t border-slate-800 text-xs text-slate-300">
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-brand-orange shrink-0" /> Renovação automática mensal
+                    <CheckCircle2 className="w-4 h-4 text-brand-orangeLight shrink-0" /> Renovação automática mensal
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-brand-orange shrink-0" /> Acesso imediato ao conteúdo
+                    <CheckCircle2 className="w-4 h-4 text-brand-orangeLight shrink-0" /> Acesso imediato ao conteúdo
                   </li>
                 </ul>
               </div>
               <button
                 onClick={() => handleEscolherPlano(plano)}
-                className="w-full mt-8 py-3.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg"
+                className="w-full mt-8 py-3.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg"
               >
                 Assinar {plano.nome}
               </button>
@@ -308,7 +309,7 @@ export default function Pagamento() {
       )}
 
       {!planoSelecionado && !loadingPlanos && !loadingAuth && (
-        <p className="mt-6 text-center text-xs text-slate-500 max-w-md">
+        <p className="mt-6 text-center text-xs text-slate-400 max-w-md">
           Ao assinar ou comprar, você concorda com os{' '}
           <Link to="/termos" target="_blank" rel="noopener" className="text-slate-300 underline hover:text-white">Termos de uso</Link> e a{' '}
           <Link to="/privacidade" target="_blank" rel="noopener" className="text-slate-300 underline hover:text-white">Política de privacidade</Link>.
@@ -329,7 +330,7 @@ export default function Pagamento() {
                 className="bg-slate-900 border border-brand-orange/30 hover:border-brand-orange/60 rounded-3xl p-5 md:p-7 flex flex-col justify-between transition-all shadow-xl"
               >
                 <div className="space-y-4">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 text-brand-orange text-[11px] font-bold uppercase tracking-wider">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-500/10 text-brand-orangeLight text-[11px] font-bold uppercase tracking-wider">
                     <Timer className="w-3 h-3" /> {rotuloDuracao(pack.duracao_dias)} de acesso
                   </div>
                   <h3 className="text-lg font-black text-white">{pack.nome}</h3>
@@ -340,16 +341,16 @@ export default function Pagamento() {
                   <p className="text-xs text-slate-400 leading-relaxed">{pack.descricao}</p>
                   <ul className="space-y-2.5 pt-4 border-t border-slate-800 text-xs text-slate-300">
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-brand-orange shrink-0" /> Aulão, questões e lives deste pack
+                      <CheckCircle2 className="w-4 h-4 text-brand-orangeLight shrink-0" /> Aulão, questões e lives deste pack
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-brand-orange shrink-0" /> Sem renovação automática
+                      <CheckCircle2 className="w-4 h-4 text-brand-orangeLight shrink-0" /> Sem renovação automática
                     </li>
                   </ul>
                 </div>
                 <button
                   onClick={() => handleEscolherPlano(pack)}
-                  className="w-full mt-8 py-3.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-all cursor-pointer shadow-lg"
+                  className="w-full mt-8 py-3.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-all cursor-pointer shadow-lg"
                 >
                   Comprar {pack.nome}
                 </button>
@@ -359,9 +360,10 @@ export default function Pagamento() {
         </div>
       )}
 
-      <div className="mt-12 flex items-center gap-2 text-xs text-slate-500">
-        <ShieldCheck className="w-4 h-4 text-emerald-500" /> Pagamento 100% seguro processado via Stripe. Assinaturas podem ser canceladas quando quiser.
+      <div className="mt-12 flex items-center gap-2 text-xs text-slate-400">
+        <ShieldCheck className="w-4 h-4 text-emerald-500" /> Pagamento seguro processado pela Stripe. Assinaturas podem ser canceladas quando quiser.
       </div>
+      <RodapeLegal escuro className="mt-4" />
     </div>
   );
 }

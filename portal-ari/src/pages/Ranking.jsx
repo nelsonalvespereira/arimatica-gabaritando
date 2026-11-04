@@ -97,7 +97,7 @@ export default function Ranking() {
                 <button
                   onClick={() => setFiltroRanking('curso')}
                   className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-colors ${
-                    filtroRanking === 'curso' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                    filtroRanking === 'curso' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-800'
                   }`}
                 >
                   <BookOpen className="w-4 h-4" /> Meu Curso
@@ -105,7 +105,7 @@ export default function Ranking() {
                 <button
                   onClick={() => setFiltroRanking('geral')}
                   className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-colors ${
-                    filtroRanking === 'geral' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                    filtroRanking === 'geral' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-800'
                   }`}
                 >
                   <Globe className="w-4 h-4" /> Ranking Geral
@@ -162,7 +162,7 @@ export default function Ranking() {
                 })}
 
                 {!loading && listaFiltrada.length === 0 && (
-                  <p className="px-5 py-12 text-center text-sm text-slate-400 font-medium">
+                  <p className="px-5 py-12 text-center text-sm text-slate-500 font-medium">
                     Nenhum aluno encontrado no ranking.
                   </p>
                 )}

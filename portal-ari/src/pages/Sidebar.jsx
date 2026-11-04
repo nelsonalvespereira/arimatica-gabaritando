@@ -20,7 +20,7 @@ const NAV_ITEMS_SECONDARY = [
 const navLinkClass = ({ isActive }) =>
   `flex items-center px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors ${
     isActive
-      ? 'bg-brand-orange/10 text-brand-orange'
+      ? 'bg-brand-orange/15 text-brand-orangeLight'
       : 'text-slate-400 hover:bg-slate-900 hover:text-white'
   }`;
 
@@ -67,12 +67,12 @@ export default function Sidebar({ ocultarNoComputador = false }) {
           className="w-8 h-8 rounded-lg object-cover shrink-0"
         />
         <span className="text-sm font-black text-white tracking-wide leading-tight">
-          Arimática <span className="text-brand-orange">GABARITANDO</span>
+          Arimática <span className="text-brand-orangeLight">GABARITANDO</span>
         </span>
       </div>
 
       <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-        <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-2">
+        <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
           Plataforma
         </p>
 
@@ -118,12 +118,12 @@ export default function Sidebar({ ocultarNoComputador = false }) {
         >
           <ShoppingBag className="w-4.5 h-4.5 mr-3 shrink-0" />
           Packs Avulsos
-          <span className="ml-auto text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-brand-orange/15 text-brand-orange">
+          <span className="ml-auto text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-brand-orange/15 text-brand-orangeLight">
             Novo
           </span>
         </NavLink>
 
-        <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-600 mt-6 mb-2">
+        <p className="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-6 mb-2">
           Acompanhamento
         </p>
         {NAV_ITEMS_SECONDARY.map(({ to, label, icon: Icon }) => (

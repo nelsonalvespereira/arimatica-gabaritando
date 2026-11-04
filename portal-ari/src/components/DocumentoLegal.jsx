@@ -52,7 +52,7 @@ export default function DocumentoLegal({ titulo, resumo, secoes, outro }) {
         <p className="mt-3 text-slate-600 leading-relaxed">{resumo}</p>
 
         <nav aria-label="Índice" className="mt-6 bg-white border border-slate-200 rounded-2xl p-4 md:p-5">
-          <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Nesta página</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Nesta página</p>
           <ol className="grid sm:grid-cols-2 gap-x-6 gap-y-1.5 text-sm">
             {secoes.map((s, i) => (
               <li key={s.id}>

@@ -113,7 +113,7 @@ export default function AdminModulos() {
             <button
               type="submit"
               disabled={criando || !novoTitulo.trim()}
-              className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 disabled:bg-slate-300 text-white font-bold text-sm rounded-xl transition-colors shrink-0"
+              className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 disabled:bg-slate-300 text-white font-bold text-sm rounded-xl transition-colors shrink-0"
             >
               {criando ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
               Novo Módulo

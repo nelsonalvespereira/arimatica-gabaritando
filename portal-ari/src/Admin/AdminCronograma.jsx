@@ -304,7 +304,7 @@ export default function AdminCronograma() {
                   <textarea value={descricao} onChange={e => setDescricao(e.target.value)} rows="3" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-brand-orange text-sm font-medium resize-none" placeholder="Ex: Assistir videoaula e depois praticar..." />
                 </div>
 
-                <button disabled={salvando} type="submit" className="w-full py-3.5 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2 mt-6 shadow-sm cursor-pointer">
+                <button disabled={salvando} type="submit" className="w-full py-3.5 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2 mt-6 shadow-sm cursor-pointer">
                   {salvando ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Lançar na Rotina
                 </button>

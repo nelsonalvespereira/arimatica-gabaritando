@@ -154,7 +154,7 @@ export default function Pack() {
   if (carregandoPack) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <Loader2 className="w-10 h-10 animate-spin text-brand-orange" />
+        <Loader2 className="w-10 h-10 animate-spin text-brand-orangeLight" />
       </div>
     );
   }
@@ -167,7 +167,7 @@ export default function Pack() {
         <div className="text-center space-y-4 max-w-sm">
           <h1 className="text-xl font-black text-white">Pack não encontrado</h1>
           <p className="text-sm text-slate-400">Ele pode ter saído de venda.</p>
-          <Link to="/packs" className="inline-flex px-5 py-3 bg-brand-orange hover:bg-orange-600 text-white text-sm font-bold rounded-xl">
+          <Link to="/packs" className="inline-flex px-5 py-3 bg-brand-orange hover:bg-orange-800 text-white text-sm font-bold rounded-xl">
             Ver packs disponíveis
           </Link>
         </div>
@@ -179,7 +179,7 @@ export default function Pack() {
     return (
       <TelaSimples>
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center space-y-4 max-w-md w-full">
-          <div className="w-14 h-14 bg-brand-orange/10 text-brand-orange rounded-2xl flex items-center justify-center mx-auto">
+          <div className="w-14 h-14 bg-brand-orange/10 text-brand-orangeLight rounded-2xl flex items-center justify-center mx-auto">
             <Lock className="w-6 h-6" />
           </div>
           <h1 className="text-xl font-black text-white">{acabou ? 'Seu acesso a este pack terminou' : pack.nome}</h1>
@@ -187,7 +187,7 @@ export default function Pack() {
           <p className="text-sm text-slate-400">
             {formatarPreco(pack.valor_centavos)} · pagamento único · {rotuloDuracao(pack.duracao_dias)} de acesso
           </p>
-          <button onClick={comprar} className="w-full py-3.5 bg-brand-orange hover:bg-orange-600 text-white text-sm font-bold rounded-xl cursor-pointer">
+          <button onClick={comprar} className="w-full py-3.5 bg-brand-orange hover:bg-orange-800 text-white text-sm font-bold rounded-xl cursor-pointer">
             {acabou ? 'Comprar de novo' : 'Comprar este pack'}
           </button>
         </div>
@@ -208,7 +208,7 @@ export default function Pack() {
         </Link>
 
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-brand-orange truncate flex items-center gap-1.5">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-brand-orangeLight truncate flex items-center gap-1.5">
             <Package className="w-3.5 h-3.5 shrink-0" /> Pack avulso
           </p>
           <p className="text-sm font-bold text-white truncate">{pack.nome}</p>
@@ -221,7 +221,7 @@ export default function Pack() {
             }`}
             title={`Acesso até ${expiraEm.toLocaleString('pt-BR')}`}
           >
-            <Timer className="w-4 h-4 text-brand-orange" />
+            <Timer className="w-4 h-4 text-brand-orangeLight" />
             <span className="hidden sm:inline">Acaba em</span>
             <span className="tabular-nums">{formatarRestante(restanteMs)}</span>
           </div>
@@ -278,7 +278,7 @@ export default function Pack() {
                     <p className="text-slate-300 text-sm">
                       {new Date(atual.data_hora).toLocaleString('pt-BR', { dateStyle: 'full', timeStyle: 'short' })}
                     </p>
-                    <p className="text-brand-orange font-bold tabular-nums">
+                    <p className="text-brand-orangeLight font-bold tabular-nums">
                       Começa em {formatarRestante(new Date(atual.data_hora).getTime() - agora)}
                     </p>
                   </div>
@@ -290,7 +290,7 @@ export default function Pack() {
                 <div className="mt-4 md:mt-5 flex flex-col xl:flex-row xl:items-center gap-4">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 mb-1.5 flex-wrap">
-                      <span className="text-brand-orange font-bold uppercase tracking-wider">
+                      <span className="text-brand-orangeLight font-bold uppercase tracking-wider">
                         {atual.tipo === 'aulao' ? 'Aulão' : atual.tipo === 'questoes' ? 'Resolução de questões' : 'Live'}
                       </span>
                       {atual.duracao_min && (
@@ -328,7 +328,7 @@ export default function Pack() {
                 {/* Sobre + material */}
                 <div className="mt-5 md:mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5">
                   <h3 className="text-sm font-bold text-white flex items-center gap-2 mb-3">
-                    <Info className="w-4 h-4 text-brand-orange" /> Sobre este conteúdo
+                    <Info className="w-4 h-4 text-brand-orangeLight" /> Sobre este conteúdo
                   </h3>
                   {atual.descricao ? (
                     <p className="text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">{atual.descricao}</p>
@@ -338,7 +338,7 @@ export default function Pack() {
                   <div className="flex flex-wrap gap-2 mt-4 empty:hidden">
                     <BotaoMaterial
                       item={atual}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-orange hover:bg-orange-600 text-white text-sm font-bold rounded-xl transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-orange hover:bg-orange-800 text-white text-sm font-bold rounded-xl transition-colors"
                     >
                       {atual.tipo === 'questoes' ? 'Abrir questões (PDF)' : 'Material de apoio'}
                     </BotaoMaterial>
@@ -358,7 +358,7 @@ export default function Pack() {
           >
             <div className="px-5 py-4 border-b border-slate-800 shrink-0">
               <h3 className="text-white font-black text-base flex items-center gap-2">
-                <Package className="w-4 h-4 text-brand-orange" /> Conteúdo do pack
+                <Package className="w-4 h-4 text-brand-orangeLight" /> Conteúdo do pack
               </h3>
               <p className="text-xs font-semibold text-slate-400 mt-1">
                 {totalItens} {totalItens === 1 ? 'item' : 'itens'}
@@ -400,7 +400,7 @@ export default function Pack() {
                                 {item.titulo}
                               </span>
                               <span className="flex items-center gap-2 mt-1 text-[11px] font-semibold text-slate-500 flex-wrap">
-                                {selecionado && toca && <span className="text-brand-orange">Assistindo</span>}
+                                {selecionado && toca && <span className="text-brand-orangeLight">Assistindo</span>}
                                 {st && <span className={`px-1.5 rounded ${STATUS_LIVE[st].cls}`}>{STATUS_LIVE[st].label}</span>}
                                 {st === 'agendada' && (
                                   <span>{new Date(item.data_hora).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
@@ -427,7 +427,7 @@ export default function Pack() {
                 >
                   <p className="text-sm font-black text-white">Gostou? Tenha a plataforma completa</p>
                   <p className="text-xs text-slate-300 mt-1">Videoaulas, banco de questões e simulados da sua turma.</p>
-                  <span className="inline-flex items-center gap-1 mt-2 text-xs font-bold text-brand-orange">Ver assinaturas <ChevronRight className="w-3.5 h-3.5" /></span>
+                  <span className="inline-flex items-center gap-1 mt-2 text-xs font-bold text-brand-orangeLight">Ver assinaturas <ChevronRight className="w-3.5 h-3.5" /></span>
                 </Link>
               )}
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import RodapeLegal from '../components/RodapeLegal';
 import { Target, BookOpen, GraduationCap, Calculator, ChevronRight, Quote, Atom, LogIn, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -12,14 +13,14 @@ const NICHES = [
   {
     id: 'enem',
     title: 'ENEM',
-    description: 'Domine a matemática e alcance a nota mil no Exame Nacional do Ensino Médio.',
+    description: 'Matemática do ENEM com aulas, questões comentadas e simulados no estilo da prova.',
     icon: BookOpen,
     accent: 'orange',
   },
   {
     id: 'concursos',
     title: 'Concursos',
-    description: 'Raciocínio lógico e matemática gabaritados para garantir a sua posse.',
+    description: 'Raciocínio lógico e matemática para concursos, do básico às questões das bancas.',
     icon: Target,
     accent: 'blue',
   },
@@ -144,7 +145,7 @@ export default function LandingPage() {
             <span className="text-sm font-black text-white tracking-wide leading-none mb-1">
               ARIMATICA
             </span>
-            <span className="text-[10px] font-black text-brand-orange tracking-widest leading-none">
+            <span className="text-[10px] font-black text-brand-orangeLight tracking-widest leading-none">
               GABARITANDO
             </span>
           </div>
@@ -153,6 +154,7 @@ export default function LandingPage() {
         <div className="flex items-center gap-3">
           <Link
             to={user ? destinoLogado : '/login'}
+            aria-label={user ? 'Minha área' : 'Entrar'}
             className="flex items-center gap-2 px-4 py-2 text-slate-300 hover:text-white font-semibold text-sm transition-colors"
           >
             <LogIn className="w-4 h-4" />
@@ -161,7 +163,7 @@ export default function LandingPage() {
 
           <button
             onClick={scrollToTurmas}
-            className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-orange-500/20 transition-all transform active:scale-95"
+            className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold text-sm shadow-lg shadow-orange-500/20 transition-all transform active:scale-95"
           >
             Acessar Plataforma <ArrowRight className="w-4 h-4" />
           </button>
@@ -191,7 +193,7 @@ export default function LandingPage() {
               />
               <h1 className="text-4xl md:text-5xl font-black text-white leading-tight tracking-wide sm:text-left text-center">
                 ARIMATICA<br />
-                <span className="text-brand-orange">GABARITANDO</span>
+                <span className="text-brand-orangeLight">GABARITANDO</span>
               </h1>
             </div>
 
@@ -327,11 +329,7 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      <footer className="py-8 px-6 text-center text-xs text-slate-500 font-medium">
-        © {new Date().getFullYear()} Arimática Gabaritando ·{' '}
-        <Link to="/termos" className="hover:text-slate-900 underline-offset-2 hover:underline">Termos de uso</Link> ·{' '}
-        <Link to="/privacidade" className="hover:text-slate-900 underline-offset-2 hover:underline">Política de privacidade</Link>
-      </footer>
+      <RodapeLegal />
     </div>
   );
 }

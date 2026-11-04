@@ -174,7 +174,7 @@ export default function AdminAssuntos() {
                 <button 
                   type="submit" 
                   disabled={salvando}
-                  className="px-6 py-3 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer"
+                  className="px-6 py-3 bg-brand-orange hover:bg-orange-800 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer"
                 >
                   {salvando ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />} Adicionar
                 </button>

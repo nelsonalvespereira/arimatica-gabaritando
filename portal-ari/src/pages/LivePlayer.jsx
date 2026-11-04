@@ -124,7 +124,7 @@ export default function LivePlayer() {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-slate-950">
-        <Loader2 className="w-12 h-12 animate-spin text-brand-orange" />
+        <Loader2 className="w-12 h-12 animate-spin text-brand-orangeLight" />
       </div>
     );
   }
@@ -179,7 +179,7 @@ export default function LivePlayer() {
 
                 <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-brand-orange bg-orange-500/10 px-3 py-1 rounded-lg mb-2 inline-block">
+                    <span className="text-xs font-bold uppercase tracking-wider text-brand-orangeLight bg-orange-500/10 px-3 py-1 rounded-lg mb-2 inline-block">
                       {live.professor || 'Prof. Ari'}
                     </span>
                     <h2 className="text-xl md:text-2xl font-black text-white">{live.titulo}</h2>
@@ -202,7 +202,7 @@ export default function LivePlayer() {
           {/* LADO DIREITO: CHAT AO VIVO REAL-TIME */}
           <div className="w-full lg:w-[380px] bg-slate-900 border-l border-slate-800 flex flex-col shrink-0 h-72 lg:h-auto">
             <div className="p-4 border-b border-slate-800 flex items-center gap-2 shrink-0">
-              <MessageSquare className="w-4 h-4 text-brand-orange" />
+              <MessageSquare className="w-4 h-4 text-brand-orangeLight" />
               <h3 className="text-white font-bold text-sm">Chat da Transmissão</h3>
             </div>
 
@@ -213,7 +213,7 @@ export default function LivePlayer() {
               ) : (
                 chatMensagens.map((msg) => (
                   <div key={msg.id} className="bg-slate-800/40 p-3 rounded-xl border border-slate-800/60 text-xs">
-                    <span className="font-bold text-brand-orange">{msg.autor}:</span>
+                    <span className="font-bold text-brand-orangeLight">{msg.autor}:</span>
                     <p className="text-slate-300 mt-0.5 leading-relaxed">{msg.texto}</p>
                   </div>
                 ))
@@ -232,7 +232,7 @@ export default function LivePlayer() {
               <button 
                 type="submit"
                 disabled={enviando}
-                className="bg-brand-orange hover:bg-orange-600 text-white p-2.5 rounded-xl transition-colors shrink-0 flex items-center justify-center disabled:opacity-50"
+                className="bg-brand-orange hover:bg-orange-800 text-white p-2.5 rounded-xl transition-colors shrink-0 flex items-center justify-center disabled:opacity-50"
               >
                 {enviando ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
               </button>

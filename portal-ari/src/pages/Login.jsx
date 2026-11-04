@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import RodapeLegal from '../components/RodapeLegal';
 import { Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabaseClient';
@@ -105,7 +106,7 @@ export default function Login() {
               <span className="text-white font-black text-lg">A</span>
             </div>
             <span className="text-xl font-black text-slate-800 tracking-tight">
-              Portal<span className="text-brand-orange">Ari</span>
+              Arimática <span className="text-brand-orange">Gabaritando</span>
             </span>
           </Link>
         </div>
@@ -208,7 +209,7 @@ export default function Login() {
                   </label>
                 </div>
 
-                <Link to="/esqueci-senha" className="text-sm font-bold text-brand-orange hover:text-orange-600 transition-colors">
+                <Link to="/esqueci-senha" className="text-sm font-bold text-brand-orange hover:text-orange-800 transition-colors">
                   Esqueceu a senha?
                 </Link>
               </div>
@@ -219,7 +220,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-brand-orange hover:bg-orange-600 text-white text-base font-bold rounded-xl shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all active:scale-95 group disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-brand-orange hover:bg-orange-800 text-white text-base font-bold rounded-xl shadow-lg shadow-orange-200 hover:shadow-orange-300 transition-all active:scale-95 group disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -238,11 +239,12 @@ export default function Login() {
             <button
               type="button"
               onClick={() => setIsRegistering(!isRegistering)}
-              className="font-bold text-brand-orange hover:text-orange-600 transition-colors"
+              className="font-bold text-brand-orange hover:text-orange-800 transition-colors"
             >
               {isRegistering ? 'Faça login aqui' : 'Crie sua conta'}
             </button>
           </p>
+          <RodapeLegal className="mt-6 !px-0" />
         </div>
       </div>
 

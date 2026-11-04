@@ -25,7 +25,7 @@ export default function AdminSidebar() {
     <aside className="w-64 bg-[#1e2330] flex-col hidden lg:flex shrink-0">
       <div className="h-16 flex items-center px-6 border-b border-slate-700/50">
         <span className="text-lg font-black text-white tracking-tight">
-          Admin<span className="text-brand-orange">Ari</span>
+          Admin<span className="text-brand-orangeLight">Ari</span>
         </span>
       </div>
 

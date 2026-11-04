@@ -148,7 +148,7 @@ export default function BancoQuestoes() {
         </h3>
         <button
           onClick={() => { setBusca(''); setDificuldade(''); setAssuntoIdSelecionado(''); setPagina(0); }}
-          className="text-xs font-bold text-slate-400 hover:text-brand-orange transition-colors cursor-pointer"
+          className="text-xs font-bold text-slate-500 hover:text-brand-orange transition-colors cursor-pointer"
         >
           Limpar
         </button>
@@ -385,7 +385,7 @@ export default function BancoQuestoes() {
                 <div className="p-4 border-t border-slate-100 pb-[calc(16px+env(safe-area-inset-bottom))]">
                   <button
                     onClick={() => setFiltrosAbertos(false)}
-                    className="w-full py-3.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl cursor-pointer"
+                    className="w-full py-3.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl cursor-pointer"
                   >
                     {loading ? 'Carregando…' : `Ver ${questoesEmbaralhadas.length} ${questoesEmbaralhadas.length === 1 ? 'questão' : 'questões'}`}
                   </button>
@@ -420,7 +420,7 @@ export default function BancoQuestoes() {
               {!loading && questaoAtual && (
                 <>
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-bold text-slate-500">
+                    <p className="text-sm font-bold text-slate-600">
                       Questão <span className="text-slate-900">{pagina + 1}</span> de {questoesEmbaralhadas.length} <span className="text-xs text-orange-500 font-bold ml-1"></span>
                     </p>
                   </div>
@@ -431,7 +431,7 @@ export default function BancoQuestoes() {
                         <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md flex items-center gap-1">
                           <BookOpen className="w-3 h-3" /> {questaoAtual.materia}
                         </span>
-                        <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md text-xs font-bold">
+                        <span className="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md text-xs font-bold">
                           {questaoAtual.assunto}
                         </span>
                         {questaoAtual.banca && (
@@ -528,7 +528,7 @@ export default function BancoQuestoes() {
                         <button
                           onClick={handleResponder}
                           disabled={!respostaSelecionada || enviando}
-                          className="px-5 py-2.5 md:py-2 bg-brand-orange hover:bg-orange-600 disabled:bg-slate-300 text-white font-bold text-sm rounded-lg transition-colors cursor-pointer shrink-0"
+                          className="px-5 py-2.5 md:py-2 bg-brand-orange hover:bg-orange-800 disabled:bg-slate-300 text-white font-bold text-sm rounded-lg transition-colors cursor-pointer shrink-0"
                         >
                           Responder
                         </button>
@@ -542,7 +542,7 @@ export default function BancoQuestoes() {
                       ) : (
                         <button
                           onClick={irParaProxima}
-                          className="flex items-center gap-1.5 px-5 py-2.5 md:py-2 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-lg transition-colors cursor-pointer shrink-0"
+                          className="flex items-center gap-1.5 px-5 py-2.5 md:py-2 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-lg transition-colors cursor-pointer shrink-0"
                         >
                           Próxima <ChevronRight className="w-4 h-4" />
                         </button>

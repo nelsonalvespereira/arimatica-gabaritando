@@ -406,7 +406,7 @@ export default function AdminNovaQuestao() {
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
               <div className="bg-slate-50 border-b border-slate-100 px-5 py-3 flex items-center justify-between text-xs font-bold flex-wrap gap-1">
                 <span className="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">{materia || 'Matéria'}</span>
-                <span className="text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">{assuntoSelecionadoObj?.nome || 'Assunto / Categoria'}</span>
+                <span className="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">{assuntoSelecionadoObj?.nome || 'Assunto / Categoria'}</span>
                 <span className="text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md capitalize">{dificuldade}</span>
               </div>
 

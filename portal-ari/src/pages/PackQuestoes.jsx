@@ -153,7 +153,7 @@ export default function PackQuestoes() {
             <button
               onClick={responder}
               disabled={!escolhas[q.id] || enviando}
-              className="px-6 py-2.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl disabled:opacity-50 cursor-pointer flex items-center gap-2"
+              className="px-6 py-2.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl disabled:opacity-50 cursor-pointer flex items-center gap-2"
             >
               {enviando && <Loader2 className="w-4 h-4 animate-spin" />} Responder
             </button>

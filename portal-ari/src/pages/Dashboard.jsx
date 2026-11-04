@@ -154,7 +154,7 @@ export default function Dashboard() {
                       <PlayIcon className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[11px] font-bold text-brand-orange uppercase tracking-wider mb-0.5">
+                      <p className="text-[11px] font-bold text-brand-orangeLight uppercase tracking-wider mb-0.5">
                         {ultimaAula?.modulo || 'Módulo Recente'}
                       </p>
                       <h4 className="font-bold text-white text-sm line-clamp-2 sm:truncate">
@@ -257,7 +257,7 @@ export default function Dashboard() {
             )}
 
             <motion.div variants={fadeUp}>
-              <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3 px-1">Atalhos</h3>
+              <h3 className="text-sm font-bold text-slate-600 uppercase tracking-wider mb-3 px-1">Atalhos</h3>
               <div className="bg-white border border-slate-200 rounded-3xl divide-y divide-slate-100 overflow-hidden">
                 {QUICK_ACCESS.map(({ to, icon: Icon, title, description, cta }) => (
                   <button

@@ -325,7 +325,7 @@ export default function Simulados() {
 
               <button
                 onClick={() => { setVisualizandoGabarito(true); setGabaritoReveladoNaQuestao(false); }}
-                className="w-full py-3 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors mb-2 cursor-pointer shadow-md"
+                className="w-full py-3 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors mb-2 cursor-pointer shadow-md"
               >
                 Ver Gabarito por Demanda
               </button>
@@ -361,7 +361,7 @@ export default function Simulados() {
                             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                               gabaritoReveladoNaQuestao 
                                 ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' 
-                                : 'bg-brand-orange text-white hover:bg-orange-600 shadow-sm'
+                                : 'bg-brand-orange text-white hover:bg-orange-800 shadow-sm'
                             }`}
                           >
                             {gabaritoReveladoNaQuestao ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -475,7 +475,7 @@ export default function Simulados() {
                   <button
                     onClick={() => mudarQuestao(Math.min(questoesProva.length - 1, questaoAtual + 1))}
                     disabled={questaoAtual === questoesProva.length - 1}
-                    className="flex items-center px-6 py-2.5 bg-brand-orange hover:bg-orange-600 disabled:opacity-50 text-white font-bold rounded-lg transition-colors shadow-md cursor-pointer"
+                    className="flex items-center px-6 py-2.5 bg-brand-orange hover:bg-orange-800 disabled:opacity-50 text-white font-bold rounded-lg transition-colors shadow-md cursor-pointer"
                   >
                     Próxima <ChevronRight className="w-5 h-5 ml-1" />
                   </button>
@@ -575,7 +575,7 @@ export default function Simulados() {
             </button>
             <div>
               <h1 className="text-2xl font-black text-slate-900 tracking-tight">Central de Simulados</h1>
-              <p className="text-slate-500 text-sm font-medium">Configure seu ambiente de prova e teste seus conhecimentos.</p>
+              <p className="text-slate-600 text-sm font-medium">Configure seu ambiente de prova e teste seus conhecimentos.</p>
             </div>
           </div>
 
@@ -624,7 +624,7 @@ export default function Simulados() {
                     <Loader2 className="w-5 h-5 animate-spin" /> Carregando...
                   </div>
                 ) : simuladosOficiais.length === 0 ? (
-                  <p className="text-sm text-slate-400 font-medium text-center py-10">
+                  <p className="text-sm text-slate-500 font-medium text-center py-10">
                     Nenhum simulado oficial cadastrado pra sua turma ainda.
                   </p>
                 ) : (
@@ -640,7 +640,7 @@ export default function Simulados() {
                         <button
                           onClick={() => iniciarOficial(s)}
                           disabled={carregandoProva}
-                          className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-70 cursor-pointer"
+                          className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-70 cursor-pointer"
                         >
                           {carregandoProva && simuladoAtivo?.id === s.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <PlayCircle className="w-4 h-4" />}
                           Iniciar
@@ -663,7 +663,7 @@ export default function Simulados() {
                     <Loader2 className="w-5 h-5 animate-spin" /> Carregando árvore de assuntos...
                   </div>
                 ) : assuntosArvore.length === 0 ? (
-                  <p className="text-sm text-slate-400 font-medium text-center py-10">
+                  <p className="text-sm text-slate-500 font-medium text-center py-10">
                     Nenhum assunto cadastrado na árvore da sua turma ainda.
                   </p>
                 ) : (
@@ -761,7 +761,7 @@ export default function Simulados() {
                 <button
                   onClick={iniciarPorAssuntoHierarquico}
                   disabled={!assuntoIdSelecionado || gerando}
-                  className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-brand-orange disabled:bg-slate-300 hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors cursor-pointer shadow-md"
+                  className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-brand-orange disabled:bg-slate-300 hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors cursor-pointer shadow-md"
                 >
                   {gerando ? <Loader2 className="w-5 h-5 animate-spin" /> : <PlayCircle className="w-5 h-5" />}
                   {assuntoNomeSelecionado ? `Iniciar Treino: ${assuntoNomeSelecionado}` : 'Selecione um assunto acima'}
@@ -809,7 +809,7 @@ export default function Simulados() {
                 <button
                   onClick={iniciarPersonalizado}
                   disabled={gerando}
-                  className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-70 cursor-pointer shadow-md"
+                  className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors disabled:opacity-70 cursor-pointer shadow-md"
                 >
                   {gerando ? <Loader2 className="w-5 h-5 animate-spin" /> : <PlayCircle className="w-5 h-5" />}
                   Gerar Simulado

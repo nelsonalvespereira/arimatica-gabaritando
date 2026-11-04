@@ -23,7 +23,7 @@ export default function NaoEncontrada() {
         <div className="mt-8 flex flex-col sm:flex-row gap-2 justify-center">
           <Link
             to={destino.to}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-orange hover:bg-orange-600 text-white text-sm font-bold"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-orange hover:bg-orange-800 text-white text-sm font-bold"
           >
             <Compass className="w-4 h-4" /> {destino.texto}
           </Link>

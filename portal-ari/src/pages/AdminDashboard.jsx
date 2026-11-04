@@ -98,7 +98,7 @@ export default function Admin() {
                 </button>
                 <Link 
                     to="/admin/nova-questao" 
-  className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold transition-all shadow-md shadow-brand-orange/20"
+  className="flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold transition-all shadow-md shadow-brand-orange/20"
 >
   <Plus className="w-4 h-4" /> Nova Questão
 </Link>
@@ -159,7 +159,7 @@ export default function Admin() {
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
               <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-white">
                 <h3 className="text-lg font-black text-slate-900">Últimas Matrículas</h3>
-                <button className="text-sm font-bold text-brand-orange hover:text-orange-600 transition-colors">
+                <button className="text-sm font-bold text-brand-orange hover:text-orange-800 transition-colors">
                   Ver todos
                 </button>
               </div>

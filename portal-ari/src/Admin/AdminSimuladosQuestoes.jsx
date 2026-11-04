@@ -116,6 +116,7 @@ export default function AdminSimuladosQuestoes() {
 
               <div className="relative">
                 <select
+                  aria-label="Filtrar por turma"
                   value={turmaFiltro}
                   onChange={(e) => setTurmaFiltro(e.target.value)}
                   className="appearance-none bg-white border border-slate-200 rounded-xl py-2.5 pl-4 pr-10 text-sm font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition-colors cursor-pointer"
@@ -131,14 +132,14 @@ export default function AdminSimuladosQuestoes() {
               {aba === 'questoes' ? (
                 <Link
                   to="/admin/nova-questao"
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors shrink-0"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors shrink-0"
                 >
                   <Plus className="w-4 h-4" /> Nova Questão
                 </Link>
               ) : (
                 <Link
                   to="/admin/novo-simulado"
-                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors shrink-0"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors shrink-0"
                 >
                   <Plus className="w-4 h-4" /> Novo Simulado
                 </Link>
@@ -153,7 +154,7 @@ export default function AdminSimuladosQuestoes() {
                     <Loader2 className="w-5 h-5 animate-spin" /> Carregando questões...
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Tabela (role para os lados)">
                     <table className="w-full text-left border-collapse">
                       <thead>
                         <tr className="bg-slate-50 border-b border-slate-100">
@@ -188,6 +189,7 @@ export default function AdminSimuladosQuestoes() {
                             <td className="px-6 py-3.5 whitespace-nowrap text-right relative">
                               <button
                                 onClick={(e) => { e.stopPropagation(); setMenuAberto(menuAberto === q.id ? null : q.id); }}
+                                aria-label="Ações"
                                 className="text-slate-400 hover:text-brand-orange transition-colors p-1.5 cursor-pointer"
                               >
                                 <MoreHorizontal className="w-4.5 h-4.5" />
@@ -240,7 +242,7 @@ export default function AdminSimuladosQuestoes() {
                     <Loader2 className="w-5 h-5 animate-spin" /> Carregando simulados...
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Tabela (role para os lados)">
                     <table className="w-full text-left border-collapse">
                       <thead>
                         <tr className="bg-slate-50 border-b border-slate-100">
@@ -273,6 +275,7 @@ export default function AdminSimuladosQuestoes() {
                             <td className="px-6 py-3.5 whitespace-nowrap text-right relative">
                               <button
                                 onClick={(e) => { e.stopPropagation(); setMenuAberto(menuAberto === s.id ? null : s.id); }}
+                                aria-label="Ações"
                                 className="text-slate-400 hover:text-brand-orange transition-colors p-1.5 cursor-pointer"
                               >
                                 <MoreHorizontal className="w-4.5 h-4.5" />

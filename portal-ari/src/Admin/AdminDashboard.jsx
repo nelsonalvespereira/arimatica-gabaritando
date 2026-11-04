@@ -37,10 +37,10 @@ const STATUS = {
   em_dia: { label: 'Em dia', badge: 'bg-emerald-50 text-emerald-700', icone: CheckCircle2, cor: 'bg-emerald-50 text-emerald-500', ring: 'ring-emerald-400' },
   pendente: { label: 'Pendente', badge: 'bg-amber-50 text-amber-700', icone: Clock, cor: 'bg-amber-50 text-amber-500', ring: 'ring-amber-400' },
   bloqueado: { label: 'Bloqueado', badge: 'bg-red-50 text-red-600', icone: Ban, cor: 'bg-red-50 text-red-500', ring: 'ring-red-400' },
-  sem_assinatura: { label: 'Sem assinatura', badge: 'bg-slate-100 text-slate-500', icone: UserX, cor: 'bg-slate-100 text-slate-500', ring: 'ring-slate-400' },
+  sem_assinatura: { label: 'Sem assinatura', badge: 'bg-slate-100 text-slate-600', icone: UserX, cor: 'bg-slate-100 text-slate-600', ring: 'ring-slate-400' },
   cortesia: { label: 'Cortesia', badge: 'bg-violet-50 text-violet-700' },
   pack: { label: 'Só pack', badge: 'bg-orange-50 text-brand-orange', icone: Package, cor: 'bg-orange-50 text-brand-orange', ring: 'ring-orange-400' },
-  pack_vencido: { label: 'Pack vencido', badge: 'bg-slate-100 text-slate-500' },
+  pack_vencido: { label: 'Pack vencido', badge: 'bg-slate-100 text-slate-600' },
 };
 
 const brl = (centavos) =>
@@ -287,7 +287,7 @@ export default function Admin() {
           </div>
 
           <div className="flex items-center gap-5 ml-auto">
-            <button className="relative text-slate-400 hover:text-brand-orange transition-colors">
+            <button aria-label="Notificações" className="relative text-slate-400 hover:text-brand-orange transition-colors">
               <Bell className="w-4.5 h-4.5" />
               {contagem.pendente > 0 && (
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
@@ -324,7 +324,7 @@ export default function Admin() {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-black text-slate-900 tracking-tight">Bom dia, Ari!</h2>
-                <p className="text-slate-500 text-sm font-medium mt-1">
+                <p className="text-slate-600 text-sm font-medium mt-1">
                   {loading ? 'Carregando…' : `${linhas.length.toLocaleString('pt-BR')} alunos cadastrados.`}
                   {!loading && contagem.pendente > 0 && (
                     <span className="text-amber-600 font-bold"> {contagem.pendente} com pagamento pendente.</span>
@@ -341,7 +341,7 @@ export default function Admin() {
                 </Link>
                 <Link
                   to="/admin/nova-questao"
-                  className="flex items-center gap-2 px-4 py-2.5 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold text-sm transition-colors shadow-sm shadow-orange-500/20"
+                  className="flex items-center gap-2 px-4 py-2.5 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold text-sm transition-colors shadow-sm shadow-orange-500/20"
                 >
                   <Plus className="w-4 h-4" /> Nova Questão
                 </Link>
@@ -377,7 +377,7 @@ export default function Admin() {
                       <h3 className="text-2xl font-black text-slate-900 leading-none">
                         {loading ? <Loader2 className="w-5 h-5 animate-spin text-slate-400 mt-1" /> : contagem[chave].toLocaleString('pt-BR')}
                       </h3>
-                      <p className="text-[11px] text-slate-400 font-medium mt-1 truncate">{descricao}</p>
+                      <p className="text-[11px] text-slate-500 font-medium mt-1 truncate">{descricao}</p>
                     </div>
                   </button>
                 );
@@ -394,7 +394,7 @@ export default function Admin() {
                     {loading ? <Loader2 className="w-5 h-5 animate-spin text-slate-400 mt-1" /> : brl(receitaMensal + receitaPacksMes)}
                   </h3>
                   <p
-                    className="text-[11px] text-slate-400 font-medium mt-1 truncate"
+                    className="text-[11px] text-slate-500 font-medium mt-1 truncate"
                     title="Assinaturas: preço de tabela das assinaturas ativas. Packs: vendas avulsas deste mês (sem cortesias)."
                   >
                     Assinaturas {brl(receitaMensal)} · Packs {brl(receitaPacksMes)}
@@ -426,13 +426,13 @@ export default function Admin() {
                   >
                     <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Atualizar
                   </button>
-                  <Link to="/admin/alunos" className="text-sm font-bold text-brand-orange hover:text-orange-600 transition-colors">
+                  <Link to="/admin/alunos" className="text-sm font-bold text-brand-orange hover:text-orange-800 transition-colors">
                     Gerenciar alunos
                   </Link>
                 </div>
               </div>
 
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Tabela (role para os lados)">
                 {loading ? (
                   <div className="py-12 flex flex-col items-center justify-center text-slate-400">
                     <Loader2 className="w-8 h-8 animate-spin mb-2" />
@@ -466,7 +466,7 @@ export default function Admin() {
                                 </div>
                                 <div>
                                   <span className="font-bold text-slate-900 text-sm block">{row.aluno}</span>
-                                  <span className="text-[11px] text-slate-400 font-medium">Cadastro em {data(row.cadastro)}</span>
+                                  <span className="text-[11px] text-slate-500 font-medium">Cadastro em {data(row.cadastro)}</span>
                                 </div>
                               </div>
                             </td>
@@ -487,7 +487,7 @@ export default function Admin() {
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <Link to="/admin/alunos" className="text-slate-400 hover:text-brand-orange bg-white hover:bg-orange-50 rounded-lg transition-colors p-2 inline-block">
+                              <Link to="/admin/alunos" aria-label="Ver na Gestão de Alunos" className="text-slate-400 hover:text-brand-orange bg-white hover:bg-orange-50 rounded-lg transition-colors p-2 inline-block">
                                 <MoreHorizontal className="w-4.5 h-4.5" />
                               </Link>
                             </td>
@@ -503,7 +503,7 @@ export default function Admin() {
                 <div className="px-6 py-4 border-t border-slate-100 text-center">
                   <button
                     onClick={() => setLimite((l) => l + POR_PAGINA)}
-                    className="text-sm font-bold text-brand-orange hover:text-orange-600 cursor-pointer"
+                    className="text-sm font-bold text-brand-orange hover:text-orange-800 cursor-pointer"
                   >
                     Mostrar mais ({restantes} restantes)
                   </button>

@@ -71,7 +71,7 @@ export default function PagamentoSucesso() {
             <div className="flex gap-3 justify-center pt-2">
               <button
                 onClick={() => window.location.reload()}
-                className="px-5 py-3 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl cursor-pointer"
+                className="px-5 py-3 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl cursor-pointer"
               >
                 Atualizar
               </button>

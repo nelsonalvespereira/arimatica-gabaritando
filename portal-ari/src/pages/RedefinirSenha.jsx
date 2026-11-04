@@ -101,7 +101,7 @@ export default function RedefinirSenha() {
             </p>
             <Link
               to="/esqueci-senha"
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-brand-orange hover:bg-orange-800 text-white font-bold rounded-xl transition-colors"
             >
               Pedir novo link <ArrowRight className="w-4 h-4" />
             </Link>
@@ -143,7 +143,7 @@ export default function RedefinirSenha() {
               <button
                 type="submit"
                 disabled={salvando}
-                className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-brand-orange hover:bg-orange-600 text-white text-base font-bold rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-brand-orange hover:bg-orange-800 text-white text-base font-bold rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
               >
                 {salvando ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Salvar nova senha'}
               </button>
@@ -158,7 +158,7 @@ export default function RedefinirSenha() {
             <p className="text-slate-600 leading-relaxed">Agora é só entrar com a sua nova senha.</p>
             <button
               onClick={() => navigate('/login', { replace: true })}
-              className="inline-flex items-center gap-2 px-6 py-3.5 bg-brand-orange hover:bg-orange-600 text-white font-bold rounded-xl transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3.5 bg-brand-orange hover:bg-orange-800 text-white font-bold rounded-xl transition-colors cursor-pointer"
             >
               Ir para o login <ArrowRight className="w-4 h-4" />
             </button>

@@ -64,7 +64,7 @@ export default function EsqueciSenha() {
             <button
               onClick={() => setEnviado(false)}
               disabled={espera > 0}
-              className="text-sm font-bold text-brand-orange hover:text-orange-600 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer"
+              className="text-sm font-bold text-brand-orange hover:text-orange-800 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer"
             >
               {espera > 0 ? `Enviar de novo em ${espera}s` : 'Não chegou? Enviar de novo'}
             </button>
@@ -103,7 +103,7 @@ export default function EsqueciSenha() {
               <button
                 type="submit"
                 disabled={loading || espera > 0}
-                className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-brand-orange hover:bg-orange-600 text-white text-base font-bold rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95 group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-4 px-4 bg-brand-orange hover:bg-orange-800 text-white text-base font-bold rounded-xl shadow-lg shadow-orange-200 transition-all active:scale-95 group disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

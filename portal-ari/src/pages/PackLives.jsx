@@ -96,7 +96,7 @@ function ChatDaLive({ liveId, nome }) {
           type="submit"
           disabled={enviando || !texto.trim()}
           aria-label="Enviar mensagem"
-          className="p-2.5 bg-brand-orange hover:bg-orange-600 text-white rounded-xl disabled:opacity-50 cursor-pointer"
+          className="p-2.5 bg-brand-orange hover:bg-orange-800 text-white rounded-xl disabled:opacity-50 cursor-pointer"
         >
           {enviando ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
         </button>

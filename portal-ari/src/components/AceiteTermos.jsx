@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 // Caixa "Li e aceito os Termos..." usada nos cadastros (Login e Convite).
 // escuro = true no visual escuro (página de convite).
 export default function AceiteTermos({ marcado, onChange, escuro = false }) {
-  const link = escuro ? 'text-brand-orange hover:underline font-semibold' : 'text-brand-orange hover:text-orange-600 font-bold';
+  const link = escuro ? 'text-brand-orange hover:underline font-semibold' : 'text-brand-orange hover:text-orange-800 font-bold';
   return (
     <label className={`flex items-start gap-2.5 text-sm cursor-pointer ${escuro ? 'text-slate-300' : 'text-slate-600 font-medium'}`}>
       <input

@@ -94,7 +94,7 @@ export default function Favoritos() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                     <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">{q.materia}</span>
-                    <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">{q.assunto}</span>
+                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">{q.assunto}</span>
                     <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${DIFICULDADE_STYLE[q.dificuldade]}`}>
                       {DIFICULDADE_LABEL[q.dificuldade] || q.dificuldade}
                     </span>

@@ -16,7 +16,7 @@ export default function RenderBlocos({ blocos, imgHeight = 'h-12', placeholder }
             <img
               key={i}
               src={b.valor}
-              alt=""
+              alt="Imagem da questão"
               className={`${imgHeight} w-auto object-contain rounded border border-slate-200 bg-white p-0.5 inline-block align-middle`}
             />
           ) : null

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import RodapeLegal from '../components/RodapeLegal';
 import { Package, Timer, CheckCircle2, Loader2, LogOut, PlayCircle, Plus, ShoppingBag } from 'lucide-react';
 import Sidebar from './Sidebar';
 import AvisoInstalarApp from '../components/AvisoInstalarApp';
@@ -28,7 +29,7 @@ function Moldura({ comMenu, children, signOut }) {
               <p className="text-xs font-medium text-slate-500">Aulões e materiais extras com acesso por tempo limitado</p>
             </div>
           </header>
-          <div className="flex-1 overflow-y-auto p-6 md:p-8">{children}</div>
+          <div className="flex-1 overflow-y-auto p-6 md:p-8">{children}<RodapeLegal className="mt-6" /></div>
         </main>
       </div>
     );
@@ -52,7 +53,7 @@ function Moldura({ comMenu, children, signOut }) {
           </div>
         </div>
       </header>
-      <div className="max-w-6xl mx-auto px-5 md:px-8 py-8">{children}</div>
+      <div className="max-w-6xl mx-auto px-5 md:px-8 py-8">{children}<RodapeLegal className="mt-6" /></div>
     </div>
   );
 }
@@ -96,7 +97,7 @@ function CartaoPack({ pack, expiraEm, agora, onComprar }) {
             <div className="flex gap-2">
               <Link
                 to={`/pack/${encodeURIComponent(pack.price_id)}`}
-                className="flex-1 inline-flex items-center justify-center gap-2 py-3 bg-brand-orange hover:bg-orange-600 text-white text-sm font-bold rounded-xl transition-colors"
+                className="flex-1 inline-flex items-center justify-center gap-2 py-3 bg-brand-orange hover:bg-orange-800 text-white text-sm font-bold rounded-xl transition-colors"
               >
                 <PlayCircle className="w-4 h-4" /> Acessar
               </Link>
@@ -169,7 +170,7 @@ export default function LojaPacks() {
           <>
             {liberados.length > 0 && (
               <section className="space-y-4">
-                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Meus packs</h3>
+                <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider">Meus packs</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                   {liberados.map((p) => (
                     <CartaoPack key={p.price_id} pack={p} expiraEm={meus[p.price_id]} agora={agora} onComprar={comprar} />
@@ -180,7 +181,7 @@ export default function LojaPacks() {
 
             {disponiveis.length > 0 && (
               <section className="space-y-4">
-                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wider">
                   {liberados.length > 0 ? 'Outros packs' : 'Packs disponíveis'}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">

@@ -36,7 +36,7 @@ export default function QuestaoPreviewCard({
           <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md flex items-center gap-1">
             <BookOpen className="w-3 h-3" /> {materia || 'Matéria'}
           </span>
-          <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">
+          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md">
             {assunto || 'Assunto'}
           </span>
           <span className={`text-xs font-bold px-2.5 py-1 rounded-md ${DIFICULDADE_STYLE[dificuldade]}`}>

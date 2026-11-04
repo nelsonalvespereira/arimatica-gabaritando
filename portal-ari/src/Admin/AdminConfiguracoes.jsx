@@ -4,9 +4,13 @@ import AdminSidebar from './AdminSidebar';
 import { supabase } from '../lib/supabaseClient';
 
 import { useAvisos } from '../components/Avisos';
-function Toggle({ ativo, onChange }) {
+function Toggle({ ativo, onChange, rotulo }) {
   return (
     <button
+      type="button"
+      role="switch"
+      aria-checked={ativo}
+      aria-label={rotulo}
       onClick={onChange}
       className={`w-11 h-6 rounded-full transition-colors relative shrink-0 ${ativo ? 'bg-brand-orange' : 'bg-slate-200'}`}
     >
@@ -253,7 +257,7 @@ export default function AdminConfiguracoes() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nome</label>
-                    <input
+                    <input aria-label="Nome"
                       type="text"
                       required
                       value={nomeAdmin}
@@ -263,7 +267,7 @@ export default function AdminConfiguracoes() {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Email (Conta)</label>
-                    <input
+                    <input aria-label="Email (Conta)"
                       type="email"
                       disabled
                       value={emailAdmin}
@@ -275,7 +279,7 @@ export default function AdminConfiguracoes() {
                 <button 
                   type="submit"
                   disabled={salvandoPerfil}
-                  className="mt-5 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                  className="mt-5 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
                 >
                   {salvandoPerfil && <Loader2 className="w-4 h-4 animate-spin" />} Salvar alterações
                 </button>
@@ -290,7 +294,7 @@ export default function AdminConfiguracoes() {
                 </h3>
                 <button 
                   onClick={abrirModalCriar}
-                  className="flex items-center gap-1.5 text-sm font-bold text-brand-orange hover:text-orange-600 transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 text-sm font-bold text-brand-orange hover:text-orange-800 transition-colors cursor-pointer"
                 >
                   <Plus className="w-4 h-4" /> Nova Turma
                 </button>
@@ -311,10 +315,10 @@ export default function AdminConfiguracoes() {
                         <p className="text-xs text-slate-500 font-mono">ID: {turma.id}</p>
                       </div>
                       <div className="flex items-center gap-1">
-                        <button onClick={() => abrirModalEditar(turma)} className="p-2 text-slate-400 hover:text-brand-orange transition-colors cursor-pointer">
+                        <button onClick={() => abrirModalEditar(turma)} aria-label={`Editar a turma ${turma.nome}`} className="p-2 text-slate-400 hover:text-brand-orange transition-colors cursor-pointer">
                           <Pencil className="w-4 h-4" />
                         </button>
-                        <button onClick={() => handleExcluirTurma(turma.id, turma.nome)} className="p-2 text-slate-400 hover:text-red-500 transition-colors cursor-pointer">
+                        <button onClick={() => handleExcluirTurma(turma.id, turma.nome)} aria-label={`Excluir a turma ${turma.nome}`} className="p-2 text-slate-400 hover:text-red-500 transition-colors cursor-pointer">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -336,21 +340,21 @@ export default function AdminConfiguracoes() {
                     <p className="font-bold text-slate-800 text-sm">Nova matrícula</p>
                     <p className="text-xs text-slate-500">Avisar quando um aluno se matricular em qualquer turma</p>
                   </div>
-                  <Toggle ativo={notificacoes.novaMatricula} onChange={() => toggleNotificacao('novaMatricula')} />
+                  <Toggle ativo={notificacoes.novaMatricula} onChange={() => toggleNotificacao('novaMatricula')} rotulo="Avisar nova matrícula" />
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-bold text-slate-800 text-sm">Nova dúvida no chat/live</p>
                     <p className="text-xs text-slate-500">Avisar quando um aluno postar uma dúvida</p>
                   </div>
-                  <Toggle ativo={notificacoes.novaDuvida} onChange={() => toggleNotificacao('novaDuvida')} />
+                  <Toggle ativo={notificacoes.novaDuvida} onChange={() => toggleNotificacao('novaDuvida')} rotulo="Avisar nova dúvida" />
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-bold text-slate-800 text-sm">Resumo semanal por email</p>
                     <p className="text-xs text-slate-500">Receber métricas da plataforma toda segunda-feira</p>
                   </div>
-                  <Toggle ativo={notificacoes.resumoSemanal} onChange={() => toggleNotificacao('resumoSemanal')} />
+                  <Toggle ativo={notificacoes.resumoSemanal} onChange={() => toggleNotificacao('resumoSemanal')} rotulo="Resumo semanal por e-mail" />
                 </div>
               </div>
             </div>
@@ -365,7 +369,7 @@ export default function AdminConfiguracoes() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nova senha</label>
-                    <input
+                    <input aria-label="Nova senha"
                       type="password"
                       required
                       placeholder="••••••••"
@@ -376,7 +380,7 @@ export default function AdminConfiguracoes() {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Confirmar nova senha</label>
-                    <input
+                    <input aria-label="Confirmar nova senha"
                       type="password"
                       required
                       placeholder="••••••••"
@@ -390,7 +394,7 @@ export default function AdminConfiguracoes() {
                 <button
                   type="submit"
                   disabled={salvandoSenha}
-                  className="px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                  className="px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
                 >
                   {salvandoSenha && <Loader2 className="w-4 h-4 animate-spin" />} Atualizar senha
                 </button>
@@ -417,7 +421,7 @@ export default function AdminConfiguracoes() {
             <form onSubmit={handleSalvarTurma} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Nome da Turma</label>
-                <input
+                <input aria-label="Nome da Turma"
                   type="text"
                   required
                   placeholder="Ex: Intensivo ENEM 2026"
@@ -438,7 +442,7 @@ export default function AdminConfiguracoes() {
                 <button
                   type="submit"
                   disabled={salvandoTurma}
-                  className="flex-1 py-2.5 px-4 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                  className="flex-1 py-2.5 px-4 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                 >
                   {salvandoTurma && <Loader2 className="w-4 h-4 animate-spin" />} Salvar
                 </button>

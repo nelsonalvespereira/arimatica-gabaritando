@@ -165,7 +165,7 @@ export default function AvisoInstalarApp() {
             <button
               type="button"
               onClick={instalar}
-              className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-brand-orange hover:bg-orange-600 flex items-center justify-center gap-1.5 cursor-pointer"
+              className="flex-1 py-2.5 rounded-xl text-sm font-bold bg-brand-orange hover:bg-orange-800 flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <Download className="w-4 h-4" aria-hidden /> Instalar
             </button>

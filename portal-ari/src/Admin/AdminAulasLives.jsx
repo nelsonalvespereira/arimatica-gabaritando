@@ -348,6 +348,7 @@ export default function AdminAulasLives() {
 
               <div className="relative">
                 <select
+                  aria-label="Filtrar por turma"
                   value={turmaFiltro}
                   onChange={(e) => setTurmaFiltro(e.target.value)}
                   className="appearance-none bg-white border border-slate-200 rounded-xl py-2.5 pl-4 pr-10 text-sm font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition-colors"
@@ -371,7 +372,7 @@ export default function AdminAulasLives() {
                     setModalLiveAberto(true);
                   }
                 }}
-                className="flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-all shadow-md shrink-0 cursor-pointer"
+                className="flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-all shadow-md shrink-0 cursor-pointer"
               >
                 <Plus className="w-4 h-4" /> {aba === 'videoaulas' ? 'Nova Videoaula' : 'Agendar Live'}
               </button>
@@ -385,7 +386,7 @@ export default function AdminAulasLives() {
                     <Loader2 className="w-5 h-5 animate-spin" /> Carregando videoaulas...
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Tabela (role para os lados)">
                     <table className="w-full text-left border-collapse">
                       <thead>
                         <tr className="bg-slate-50 border-b border-slate-100">
@@ -437,7 +438,7 @@ export default function AdminAulasLives() {
 
                         {videoaulas.length === 0 && (
                           <tr>
-                            <td colSpan={4} className="px-6 py-10 text-center text-sm text-slate-400 font-medium">
+                            <td colSpan={4} className="px-6 py-10 text-center text-sm text-slate-500 font-medium">
                               Nenhuma videoaula cadastrada ainda.
                             </td>
                           </tr>
@@ -457,7 +458,7 @@ export default function AdminAulasLives() {
                     <Loader2 className="w-5 h-5 animate-spin" /> Carregando lives...
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Tabela (role para os lados)">
                     <table className="w-full text-left border-collapse">
                       <thead>
                         <tr className="bg-slate-50 border-b border-slate-100">
@@ -523,7 +524,7 @@ export default function AdminAulasLives() {
 
                         {lives.length === 0 && (
                           <tr>
-                            <td colSpan={5} className="px-6 py-10 text-center text-sm text-slate-400 font-medium">
+                            <td colSpan={5} className="px-6 py-10 text-center text-sm text-slate-500 font-medium">
                               Nenhuma live cadastrada ainda.
                             </td>
                           </tr>
@@ -628,7 +629,7 @@ export default function AdminAulasLives() {
                 <button
                   type="submit"
                   disabled={salvando}
-                  className="flex-1 py-3 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
                 >
                   {salvando && <Loader2 className="w-4 h-4 animate-spin" />} Salvar Aula
                 </button>
@@ -724,7 +725,7 @@ export default function AdminAulasLives() {
                 <button
                   type="submit"
                   disabled={salvando}
-                  className="flex-1 py-3 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
                 >
                   {salvando && <Loader2 className="w-4 h-4 animate-spin" />} Salvar Alterações
                 </button>
@@ -818,7 +819,7 @@ export default function AdminAulasLives() {
                 <button
                   type="submit"
                   disabled={salvando}
-                  className="flex-1 py-3 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
                 >
                   {salvando && <Loader2 className="w-4 h-4 animate-spin" />} Agendar Live
                 </button>
@@ -910,7 +911,7 @@ export default function AdminAulasLives() {
                 <button
                   type="submit"
                   disabled={salvando}
-                  className="flex-1 py-3 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 py-3 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-2"
                 >
                   {salvando && <Loader2 className="w-4 h-4 animate-spin" />} Salvar Alterações
                 </button>

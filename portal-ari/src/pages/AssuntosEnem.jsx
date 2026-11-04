@@ -112,7 +112,7 @@ export default function AssuntosEnem() {
 
             <button
               onClick={() => navigate('/plano-estudos')}
-              className="w-full sm:w-auto px-6 py-3 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors"
+              className="w-full sm:w-auto px-6 py-3 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors"
             >
               Ver Plano Completo
             </button>

@@ -26,8 +26,8 @@ import { useAvisos } from '../components/Avisos';
 const STATUS_STYLE = {
   Ativo: 'bg-emerald-50 text-emerald-700',
   Pendente: 'bg-amber-50 text-amber-700',
-  Inativo: 'bg-slate-100 text-slate-500',
-  'Sem acesso': 'bg-slate-100 text-slate-500',
+  Inativo: 'bg-slate-100 text-slate-600',
+  'Sem acesso': 'bg-slate-100 text-slate-600',
   Expirado: 'bg-red-50 text-red-600',
 };
 
@@ -478,6 +478,7 @@ export default function AdminAlunos() {
 
               <div className="relative">
                 <select
+                  aria-label="Filtrar por turma"
                   value={turmaFiltro}
                   onChange={(e) => setTurmaFiltro(e.target.value)}
                   className="w-full appearance-none bg-white border border-slate-200 rounded-xl py-2.5 pl-4 pr-10 text-sm font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-orange focus:border-brand-orange transition-colors"
@@ -491,7 +492,7 @@ export default function AdminAlunos() {
 
               <button 
                 onClick={() => setModalOpen(true)}
-                className="flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors shrink-0 shadow-sm shadow-orange-500/20"
+                className="flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors shrink-0 shadow-sm shadow-orange-500/20"
               >
                 <UserPlus className="w-4 h-4" /> Convidar<span className="hidden sm:inline"> Aluno</span>
               </button>
@@ -524,7 +525,7 @@ export default function AdminAlunos() {
                           <p className="text-xs text-slate-500 font-medium mt-0.5 truncate">
                             {aluno.plano}{aluno.turma !== '—' ? ` · ${aluno.turma}` : ''}
                           </p>
-                          <p className="text-[11px] text-slate-400 font-medium mt-0.5">Cadastro em {aluno.cadastro}</p>
+                          <p className="text-[11px] text-slate-500 font-medium mt-0.5">Cadastro em {aluno.cadastro}</p>
                         </div>
                         <button
                           onClick={() => setMenuAbertoId(menuAbertoId === aluno.id ? null : aluno.id)}
@@ -585,6 +586,7 @@ export default function AdminAlunos() {
                           <td className="px-6 py-4 whitespace-nowrap text-right relative">
                             <button 
                               onClick={() => setMenuAbertoId(menuAbertoId === aluno.id ? null : aluno.id)}
+                              aria-label="Ações"
                               className="text-slate-400 hover:text-brand-orange transition-colors p-1.5 rounded-lg hover:bg-orange-50"
                             >
                               <MoreHorizontal className="w-4.5 h-4.5" />
@@ -661,7 +663,7 @@ export default function AdminAlunos() {
                 <button
                   type="submit"
                   disabled={submittingEdit}
-                  className="flex-1 py-2.5 px-4 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm"
+                  className="flex-1 py-2.5 px-4 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm"
                 >
                   {submittingEdit ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Salvar Alterações'}
                 </button>
@@ -706,7 +708,7 @@ export default function AdminAlunos() {
                 <button
                   type="submit"
                   disabled={submittingSenha}
-                  className="flex-1 py-2.5 px-4 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm"
+                  className="flex-1 py-2.5 px-4 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm"
                 >
                   {submittingSenha ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Salvar Nova Senha'}
                 </button>
@@ -820,7 +822,7 @@ export default function AdminAlunos() {
                   <button
                     type="submit"
                     disabled={submittingInvite}
-                    className="flex-1 py-2.5 px-4 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm"
+                    className="flex-1 py-2.5 px-4 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-sm"
                   >
                     {submittingInvite ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Gerar Convite'}
                   </button>
@@ -919,7 +921,7 @@ export default function AdminAlunos() {
                 <button type="button" onClick={() => setAlunoPackAlvo(null)} className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors cursor-pointer">
                   Cancelar
                 </button>
-                <button type="submit" disabled={submittingPack} className="flex-1 py-3 bg-brand-orange hover:bg-orange-600 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60">
+                <button type="submit" disabled={submittingPack} className="flex-1 py-3 bg-brand-orange hover:bg-orange-800 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60">
                   {submittingPack && <Loader2 className="w-4 h-4 animate-spin" />} Liberar
                 </button>
               </div>

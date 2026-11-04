@@ -271,7 +271,7 @@ export default function AdminLiveController() {
               <button 
                 type="submit"
                 disabled={enviando}
-                className="bg-brand-orange hover:bg-orange-600 text-white p-2.5 rounded-xl transition-colors shrink-0 flex items-center justify-center disabled:opacity-50"
+                className="bg-brand-orange hover:bg-orange-800 text-white p-2.5 rounded-xl transition-colors shrink-0 flex items-center justify-center disabled:opacity-50"
               >
                 {enviando ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
               </button>

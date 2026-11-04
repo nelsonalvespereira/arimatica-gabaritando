@@ -116,7 +116,7 @@ export default function Desempenho() {
                     <BookOpen className="w-10 h-10 text-slate-300 mx-auto mb-3" />
                     <h3 className="font-bold text-slate-700 text-sm mb-1">Nenhum dado de questão encontrado</h3>
                     <p className="text-xs text-slate-500 max-w-sm mx-auto mb-4">Resolva questões no Banco de Questões para gerar suas estatísticas reais de acertos aqui.</p>
-                    <Link to="/banco-questoes" className="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-orange text-white font-bold text-xs rounded-xl shadow-md hover:bg-orange-600 transition-colors">
+                    <Link to="/banco-questoes" className="inline-flex items-center gap-2 px-4 py-2.5 bg-brand-orange text-white font-bold text-xs rounded-xl shadow-md hover:bg-orange-800 transition-colors">
                       Ir para o Banco de Questões
                     </Link>
                   </div>

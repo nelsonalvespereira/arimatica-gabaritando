@@ -41,7 +41,7 @@ export default function PackExpirado() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             to="/packs"
-            className="px-6 py-3.5 bg-brand-orange hover:bg-orange-600 text-white font-bold text-sm rounded-xl transition-colors inline-flex items-center justify-center gap-2"
+            className="px-6 py-3.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl transition-colors inline-flex items-center justify-center gap-2"
           >
             Ver packs <ArrowRight className="w-4 h-4" />
           </Link>
