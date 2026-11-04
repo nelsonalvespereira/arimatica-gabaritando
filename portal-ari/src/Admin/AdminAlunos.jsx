@@ -62,12 +62,8 @@ export default function AdminAlunos() {
   const [copied, setCopied] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [inviteForm, setInviteForm] = useState({
-    nome: '',
-    email: '',
-    turmaId: '',
-    cortesia: false,
-  });
+  // tipo: 'plano' (escolhe um plano depois) | 'cortesia' (plataforma toda) | 'pack' (só um pack, por N dias)
+  const [inviteForm, setInviteForm] = useState({ nome: '', email: '', turmaId: '', tipo: 'plano', packId: '', packDias: '' });
 
   // Estado do Modal de Edição
   const [modalEditOpen, setModalEditOpen] = useState(false);
@@ -355,8 +351,10 @@ export default function AdminAlunos() {
           {
             nome: inviteForm.nome.trim(),
             email: inviteForm.email.trim().toLowerCase(),
-            turma_id: inviteForm.turmaId,
-            cortesia: !!inviteForm.cortesia,
+            turma_id: inviteForm.tipo === 'pack' ? null : inviteForm.turmaId,
+            cortesia: inviteForm.tipo === 'cortesia',
+            pack_price_id: inviteForm.tipo === 'pack' ? inviteForm.packId : null,
+            pack_dias: inviteForm.tipo === 'pack' ? Number(inviteForm.packDias) : null,
           },
         ])
         .select('id')
@@ -385,7 +383,7 @@ export default function AdminAlunos() {
     setInviteSuccess(false);
     setInviteLink('');
     setErrorMessage('');
-    setInviteForm({ nome: '', email: '', turmaId: '', cortesia: false });
+    setInviteForm({ nome: '', email: '', turmaId: '', tipo: 'plano', packId: '', packDias: '' });
   };
 
   // Filtragem de dados
@@ -776,11 +774,85 @@ export default function AdminAlunos() {
                   </div>
                 </div>
 
+                <fieldset className="space-y-2">
+                  <legend className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Tipo de acesso</legend>
+                  {[
+                    { valor: 'plano', titulo: 'Escolhe um plano depois', texto: 'Cria a conta e vai para a tela de planos.' },
+                    { valor: 'cortesia', titulo: 'Cortesia: plataforma toda liberada', texto: 'Entra com tudo liberado, sem pagar.' },
+                    { valor: 'pack', titulo: 'Apenas um pack', texto: 'Libera só o pack escolhido, por alguns dias.' },
+                  ].map((op) => (
+                    <label
+                      key={op.valor}
+                      className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer ${
+                        inviteForm.tipo === op.valor ? 'border-brand-orange bg-orange-50/60' : 'border-slate-200 bg-slate-50'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="tipo-convite"
+                        value={op.valor}
+                        checked={inviteForm.tipo === op.valor}
+                        onChange={() => setInviteForm({ ...inviteForm, tipo: op.valor })}
+                        className="mt-0.5 w-4 h-4 accent-orange-700"
+                        aria-label={op.titulo}
+                      />
+                      <span>
+                        <span className="block text-sm font-bold text-slate-800">{op.titulo}</span>
+                        <span className="block text-xs text-slate-600">{op.texto}</span>
+                      </span>
+                    </label>
+                  ))}
+                </fieldset>
+
+                {inviteForm.tipo === 'pack' ? (
+                  <div className="grid grid-cols-[1fr_110px] gap-3">
+                    <div>
+                      <label htmlFor="convite-pack" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Pack</label>
+                      <div className="relative">
+                        <Package className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <select
+                          id="convite-pack"
+                          required
+                          aria-label="Pack do convite"
+                          value={inviteForm.packId}
+                          onChange={(e) => {
+                            const pk = packsDisponiveis.find((x) => x.price_id === e.target.value);
+                            setInviteForm({ ...inviteForm, packId: e.target.value, packDias: pk?.duracao_dias ?? 30 });
+                          }}
+                          className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-10 pr-10 text-sm font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-brand-orange"
+                        >
+                          <option value="">Selecione o pack...</option>
+                          {packsDisponiveis.map((pk) => (
+                            <option key={pk.price_id} value={pk.price_id}>{pk.nome}</option>
+                          ))}
+                        </select>
+                        <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                      </div>
+                    </div>
+                    <div>
+                      <label htmlFor="convite-dias" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Dias</label>
+                      <input
+                        id="convite-dias"
+                        type="number"
+                        min={1}
+                        max={365}
+                        required
+                        aria-label="Dias de acesso"
+                        value={inviteForm.packDias}
+                        onChange={(e) => setInviteForm({ ...inviteForm, packDias: e.target.value })}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-brand-orange"
+                      />
+                    </div>
+                    <p className="col-span-2 text-xs text-slate-600">Os dias contam a partir do momento em que o aluno aceita o convite. A turma vem do pack.</p>
+                  </div>
+                ) : (
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Turma de Acesso</label>
+                  <label htmlFor="convite-turma" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Turma de Acesso</label>
                   <div className="relative">
                     <BookOpen className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <select
+                      id="convite-turma"
+                      aria-label="Turma de acesso"
                       required
                       value={inviteForm.turmaId}
                       onChange={(e) => setInviteForm({ ...inviteForm, turmaId: e.target.value })}
@@ -794,22 +866,7 @@ export default function AdminAlunos() {
                     <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                   </div>
                 </div>
-
-                <label className="flex items-start gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={inviteForm.cortesia}
-                    onChange={(e) => setInviteForm({ ...inviteForm, cortesia: e.target.checked })}
-                    className="mt-0.5 w-4 h-4 accent-orange-500"
-                    aria-label="Liberar acesso gratuito (cortesia)"
-                  />
-                  <span>
-                    <span className="block text-sm font-bold text-slate-800">Liberar acesso gratuito (cortesia)</span>
-                    <span className="block text-xs text-slate-500">
-                      Marcado: entra com a plataforma liberada, sem pagar. Desmarcado: cria a conta e escolhe um plano.
-                    </span>
-                  </span>
-                </label>
+                )}
 
                 <div className="pt-2 flex gap-3">
                   <button
@@ -836,9 +893,12 @@ export default function AdminAlunos() {
                 <div>
                   <h4 className="font-black text-slate-900 text-base">Convite Criado com Sucesso!</h4>
                   <p className="text-xs text-slate-500 mt-1">
-                    Envie o link para <strong>{inviteForm.nome}</strong> ({inviteForm.email.trim().toLowerCase()}), turma{' '}
-                    <strong>{turmasObjs.find((t) => t.id === inviteForm.turmaId)?.nome || '—'}</strong>
-                    {inviteForm.cortesia ? ', com acesso gratuito' : ''}.
+                    Envie o link para <strong>{inviteForm.nome}</strong> ({inviteForm.email.trim().toLowerCase()})
+                    {inviteForm.tipo === 'pack' ? (
+                      <>, com acesso ao pack <strong>{packsDisponiveis.find((pk) => pk.price_id === inviteForm.packId)?.nome || '—'}</strong> por {inviteForm.packDias} dias.</>
+                    ) : (
+                      <>, turma <strong>{turmasObjs.find((t) => t.id === inviteForm.turmaId)?.nome || '—'}</strong>{inviteForm.tipo === 'cortesia' ? ', com acesso gratuito' : ''}.</>
+                    )}
                   </p>
                   <p className="text-[11px] text-slate-400 mt-1">Vale uma vez, só para esse e-mail, por 14 dias.</p>
                 </div>

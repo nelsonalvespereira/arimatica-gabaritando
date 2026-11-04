@@ -51,7 +51,11 @@ export default function Convite() {
     const { error } = await supabase.rpc('aceitar_convite', { p_id: id });
     if (error) throw new Error(error.message);
     await recarregarPerfil?.();
-    navigate(convite.cortesia ? '/dashboard' : '/pagamento', { replace: true });
+    // Convite de pack: vai direto para o pack liberado.
+    const destino = convite.pack_price_id
+      ? `/pack/${encodeURIComponent(convite.pack_price_id)}`
+      : convite.cortesia ? '/dashboard' : '/pagamento';
+    navigate(destino, { replace: true });
   };
 
   const enviar = async (e) => {
@@ -128,7 +132,11 @@ export default function Convite() {
                 <p className="flex items-center gap-2 text-sm text-slate-300">
                   <GraduationCap className="w-4 h-4 text-brand-orangeLight shrink-0" /> Turma: <strong className="text-white">{convite.turma || '—'}</strong>
                 </p>
-                {convite.cortesia ? (
+                {convite.pack ? (
+                  <p className="flex items-center gap-2 text-sm font-bold text-orange-200 bg-orange-500/10 border border-orange-500/30 rounded-xl px-3 py-2">
+                    <Gift className="w-4 h-4 shrink-0" /> Acesso ao pack {convite.pack} por {convite.pack_dias} dias
+                  </p>
+                ) : convite.cortesia ? (
                   <p className="flex items-center gap-2 text-sm font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-3 py-2">
                     <Gift className="w-4 h-4 shrink-0" /> Com acesso liberado pelo professor
                   </p>
