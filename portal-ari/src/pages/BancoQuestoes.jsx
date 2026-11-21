@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Search, Filter, BookOpen, ChevronDown, ChevronRight, ChevronLeft,
   MessageSquare, Bookmark, FileText, Loader2, Folder, SlidersHorizontal, X
@@ -9,6 +9,8 @@ import RenderBlocos from '../components/RenderBlocos';
 import ResolucaoProfessor from '../components/ResolucaoProfessor';
 import { useQuestoes } from '../hooks/useQuestoes';
 import { supabase } from '../lib/supabaseClient';
+import { ordenarQuestoes } from '../lib/ordemQuestoes';
+import NavegadorQuestoes from '../components/NavegadorQuestoes';
 
 import { useAvisos } from '../components/Avisos';
 const ROTULO_DIFICULDADE = { facil: 'Fácil', medio: 'Médio', dificil: 'Difícil' };
@@ -28,7 +30,7 @@ export default function BancoQuestoes() {
   const [categoriasAbertas, setCategoriasAbertas] = useState({});
   const [assuntosArvore, setAssuntosArvore] = useState([]);
   const [turmaIdAluno, setTurmaIdAluno] = useState(null);
-  const [questoesEmbaralhadas, setQuestoesEmbaralhadas] = useState([]);
+  const [questoesOrdenadas, setQuestoesOrdenadas] = useState([]);
   const [filtrosAbertos, setFiltrosAbertos] = useState(false); // gaveta de filtros no celular
   const { profile } = useAuth();
 
@@ -78,17 +80,13 @@ export default function BancoQuestoes() {
     porPagina: 500,
   });
 
+  // Ordem definida pelo professor (assunto da árvore → ordem no admin → data de cadastro).
   useEffect(() => {
-    if (questoes && questoes.length > 0) {
-      const embaralhadas = [...questoes].sort(() => Math.random() - 0.5);
-      setQuestoesEmbaralhadas(embaralhadas);
-      setPagina(0);
-    } else {
-      setQuestoesEmbaralhadas([]);
-    }
-  }, [questoes]);
+    setQuestoesOrdenadas(ordenarQuestoes(questoes ?? [], assuntosArvore));
+    setPagina(0);
+  }, [questoes, assuntosArvore]);
 
-  const questaoAtual = questoesEmbaralhadas[pagina];
+  const questaoAtual = questoesOrdenadas[pagina];
 
   const alternarFavorito = () => {
     setFavoritado(!favoritado);
@@ -108,7 +106,7 @@ export default function BancoQuestoes() {
       return;
     }
     const id = questaoAtual.id;
-    setQuestoesEmbaralhadas((qs) => qs.map((q) => (q.id === id ? { ...q, ...(gabarito ?? {}) } : q)));
+    setQuestoesOrdenadas((qs) => qs.map((q) => (q.id === id ? { ...q, ...(gabarito ?? {}) } : q)));
     setRespondida(true);
   };
 
@@ -116,23 +114,23 @@ export default function BancoQuestoes() {
     setGabaritoRevelado(true);
   };
 
-  const irParaProxima = () => {
-    setPagina((p) => Math.min(questoesEmbaralhadas.length - 1, p + 1));
+  const areaQuestaoRef = useRef(null);
+
+  // Vai direto para a questão de índice i (botões numerados, Próxima e Anterior).
+  const irPara = (i) => {
+    const destino = Math.max(0, Math.min(questoesOrdenadas.length - 1, i));
+    if (destino === pagina) return;
+    setPagina(destino);
     setRespostaSelecionada(null);
     setRespondida(false);
     setGabaritoRevelado(false);
     setMostrarComentario(false);
     setFavoritado(false);
+    areaQuestaoRef.current?.scrollTo({ top: 0 });
   };
 
-  const irParaAnterior = () => {
-    setPagina((p) => Math.max(0, p - 1));
-    setRespostaSelecionada(null);
-    setRespondida(false);
-    setGabaritoRevelado(false);
-    setMostrarComentario(false);
-    setFavoritado(false);
-  };
+  const irParaProxima = () => irPara(pagina + 1);
+  const irParaAnterior = () => irPara(pagina - 1);
 
   const principais = assuntosArvore.filter(a => !a.categoria_pai_id);
   const getSub = (paiId) => assuntosArvore.filter(a => a.categoria_pai_id === paiId);
@@ -387,15 +385,35 @@ export default function BancoQuestoes() {
                     onClick={() => setFiltrosAbertos(false)}
                     className="w-full py-3.5 bg-brand-orange hover:bg-orange-800 text-white font-bold text-sm rounded-xl cursor-pointer"
                   >
-                    {loading ? 'Carregando…' : `Ver ${questoesEmbaralhadas.length} ${questoesEmbaralhadas.length === 1 ? 'questão' : 'questões'}`}
+                    {loading ? 'Carregando…' : `Ver ${questoesOrdenadas.length} ${questoesOrdenadas.length === 1 ? 'questão' : 'questões'}`}
                   </button>
                 </div>
               </div>
             </div>
           )}
 
+          {/* COMPUTADOR: números das questões, à esquerda da questão */}
+          {!loading && questoesOrdenadas.length > 1 && (
+            <NavegadorQuestoes
+              total={questoesOrdenadas.length}
+              atual={pagina}
+              onIr={irPara}
+              className="hidden md:flex"
+            />
+          )}
+
           {/* ÁREA DA QUESTÃO */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-8">
+          <div ref={areaQuestaoRef} className="flex-1 overflow-y-auto p-4 md:p-8">
+            {/* CELULAR: faixa de números no topo (arrasta para o lado) */}
+            {!loading && questoesOrdenadas.length > 1 && (
+              <NavegadorQuestoes
+                total={questoesOrdenadas.length}
+                atual={pagina}
+                onIr={irPara}
+                horizontal
+                className="md:hidden sticky -top-4 z-10 -mx-4 -mt-4 mb-4"
+              />
+            )}
             <div className="max-w-3xl mx-auto space-y-4 md:space-y-5 pb-6 md:pb-12">
               {loading && (
                 <div className="flex items-center justify-center py-20 text-slate-400 gap-2">
@@ -409,7 +427,7 @@ export default function BancoQuestoes() {
                 </div>
               )}
 
-              {!loading && !error && questoesEmbaralhadas.length === 0 && (
+              {!loading && !error && questoesOrdenadas.length === 0 && (
                 <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center">
                   <FileText className="w-10 h-10 text-slate-300 mx-auto mb-3" />
                   <h3 className="font-bold text-slate-700 mb-1">Nenhuma questão por aqui ainda</h3>
@@ -421,7 +439,7 @@ export default function BancoQuestoes() {
                 <>
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold text-slate-600">
-                      Questão <span className="text-slate-900">{pagina + 1}</span> de {questoesEmbaralhadas.length} <span className="text-xs text-orange-500 font-bold ml-1"></span>
+                      Questão <span className="text-slate-900">{pagina + 1}</span> de {questoesOrdenadas.length} <span className="text-xs text-orange-500 font-bold ml-1"></span>
                     </p>
                   </div>
 
