@@ -301,7 +301,7 @@ export default function SimuladoPersonalizado() {
                 {/* Enunciado */}
                 <div className="text-slate-100 font-medium leading-relaxed text-justify">
                   {questaoAtual.blocos_enunciado && questaoAtual.blocos_enunciado.length > 0 ? (
-                    <RenderBlocos blocos={questaoAtual.blocos_enunciado} />
+                    <RenderBlocos blocos={questaoAtual.blocos_enunciado} imagensGrandes />
                   ) : (
                     <p>{questaoAtual.enunciado}</p>
                   )}
@@ -311,6 +311,13 @@ export default function SimuladoPersonalizado() {
                 {questaoAtual.imagem_url && (
                   <div className="flex justify-center my-4">
                     <img src={questaoAtual.imagem_url} alt="Gráfico da questão" className="max-h-64 rounded-xl border border-slate-700 bg-white p-1 object-contain" />
+                  </div>
+                )}
+
+                {/* Enunciado inferior (pergunta final, abaixo do gráfico) */}
+                {questaoAtual.blocos_enunciado_inferior?.length > 0 && (
+                  <div className="text-slate-100 font-medium leading-relaxed text-justify">
+                    <RenderBlocos blocos={questaoAtual.blocos_enunciado_inferior} imagensGrandes />
                   </div>
                 )}
 

@@ -31,6 +31,7 @@ export default function AdminEditarQuestao() {
   const [banca, setBanca] = useState('Inédita');
 
   const [blocosEnunciado, setBlocosEnunciado] = useState([criarBloco('texto')]);
+  const [blocosEnunciadoInferior, setBlocosEnunciadoInferior] = useState([]);
   const [imagemPrincipalFile, setImagemPrincipalFile] = useState(null);
   const [imagemPrincipalPreview, setImagemPrincipalPreview] = useState(null);
 
@@ -69,6 +70,10 @@ export default function AdminEditarQuestao() {
             setBlocosEnunciado(qData.blocos_enunciado);
           } else if (qData.enunciado) {
             setBlocosEnunciado([{ id: Date.now(), tipo: 'texto', conteudo: qData.enunciado }]);
+          }
+
+          if (Array.isArray(qData.blocos_enunciado_inferior) && qData.blocos_enunciado_inferior.length > 0) {
+            setBlocosEnunciadoInferior(qData.blocos_enunciado_inferior);
           }
 
           if (qData.imagem_url) {
@@ -137,6 +142,9 @@ export default function AdminEditarQuestao() {
 
     try {
       const blocosEnunciadoProntos = await processarBlocos(supabase, blocosEnunciado, turmaId, 'enunciado');
+      const blocosInferiorProntos = blocosEnunciadoInferior.length > 0
+        ? await processarBlocos(supabase, blocosEnunciadoInferior, turmaId, 'enunciado-inf')
+        : [];
 
       let imagemPrincipalUrl = imagemPrincipalPreview && !imagemPrincipalFile ? imagemPrincipalPreview : null;
       if (imagemPrincipalFile) {
@@ -171,6 +179,8 @@ export default function AdminEditarQuestao() {
         dificuldade,
         enunciado: blocosParaTexto(blocosEnunciadoProntos),
         blocos_enunciado: blocosEnunciadoProntos,
+        blocos_enunciado_superior: blocosEnunciadoProntos,
+        blocos_enunciado_inferior: blocosInferiorProntos,
         imagem_url: imagemPrincipalUrl,
         alternativas: alternativasFormatadas,
         ano: parseInt(ano),
@@ -327,12 +337,13 @@ export default function AdminEditarQuestao() {
             </div>
 
             <div>
-              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1 border-b border-slate-100 pb-2">Enunciado</h3>
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1 border-b border-slate-100 pb-2">1. Enunciado Superior (Introdução / Contexto)</h3>
+              <p className="text-xs text-slate-500 mb-3">Texto que vem antes do gráfico ou da tabela.</p>
               <BlocoEditor blocos={blocosEnunciado} onChange={setBlocosEnunciado} />
             </div>
 
             <div>
-              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">Gráfico / Imagem Principal (Opcional)</h3>
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">2. Gráfico / Tabela Central (No Meio)</h3>
               <div className="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-4 text-center">
                 {!imagemPrincipalPreview ? (
                   <label className="cursor-pointer flex flex-col items-center justify-center py-4">
@@ -349,6 +360,12 @@ export default function AdminEditarQuestao() {
                   </div>
                 )}
               </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1 border-b border-slate-100 pb-2">3. Enunciado Inferior (Pergunta / Comando Final - Opcional)</h3>
+              <p className="text-xs text-slate-500 mb-3">Texto que aparece logo abaixo da tabela/gráfico fazendo a pergunta da questão.</p>
+              <BlocoEditor blocos={blocosEnunciadoInferior} onChange={setBlocosEnunciadoInferior} placeholder="Ex: A mediana dessa distribuição é igual a..." />
             </div>
 
             <div>
@@ -433,11 +450,17 @@ export default function AdminEditarQuestao() {
 
               <div className="p-5">
                 <p className="text-slate-800 font-medium leading-relaxed mb-4 text-justify">
-                  <RenderBlocos blocos={blocosEnunciado} placeholder="Enunciado..." />
+                  <RenderBlocos blocos={blocosEnunciado} imagensGrandes placeholder="Enunciado..." />
                 </p>
 
                 {imagemPrincipalPreview && (
                   <img src={imagemPrincipalPreview} alt="Gráfico" className="rounded-xl border border-slate-200 max-h-56 mx-auto mb-5 object-contain" />
+                )}
+
+                {blocosEnunciadoInferior.length > 0 && (
+                  <p className="text-slate-800 font-medium leading-relaxed mb-4 text-justify">
+                    <RenderBlocos blocos={blocosEnunciadoInferior} imagensGrandes />
+                  </p>
                 )}
 
                 <div className="space-y-2.5">

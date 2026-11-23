@@ -67,7 +67,7 @@ export function useAdminQuestoes({ busca, turmaId } = {}) {
     setLoading(true);
     let query = supabase
       .from('questoes')
-      .select('id, enunciado, blocos_enunciado, materia, assunto, dificuldade, alternativas, imagem_url, banca, ano, turmas ( nome ), questoes_gabarito ( resposta_correta, comentario )')
+      .select('id, enunciado, blocos_enunciado, blocos_enunciado_inferior, materia, assunto, dificuldade, alternativas, imagem_url, banca, ano, turmas ( nome ), questoes_gabarito ( resposta_correta, comentario )')
       .order('created_at', { ascending: false });
 
     if (turmaId) query = query.eq('turma_id', turmaId);

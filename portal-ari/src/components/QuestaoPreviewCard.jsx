@@ -21,6 +21,7 @@ export default function QuestaoPreviewCard({
   dificuldade = 'medio',
   enunciado,
   blocosEnunciado,
+  blocosEnunciadoInferior,
   imagemUrl,
   alternativas = [],
   respostaCorreta,
@@ -48,7 +49,7 @@ export default function QuestaoPreviewCard({
       <div className="p-5">
         <p className="text-slate-800 font-medium leading-relaxed mb-5 whitespace-pre-wrap text-justify">
           {temBlocos ? (
-            <RenderBlocos blocos={blocosEnunciado} placeholder="O enunciado aparece aqui conforme você digita..." />
+            <RenderBlocos blocos={blocosEnunciado} imagensGrandes placeholder="O enunciado aparece aqui conforme você digita..." />
           ) : (
             enunciado || <span className="text-slate-300 italic">O enunciado aparece aqui conforme você digita...</span>
           )}
@@ -56,6 +57,12 @@ export default function QuestaoPreviewCard({
 
         {imagemUrl && (
           <img src={imagemUrl} alt="Gráfico" className="rounded-xl border border-slate-200 max-h-56 mx-auto mb-5 object-contain" />
+        )}
+
+        {blocosEnunciadoInferior?.length > 0 && (
+          <div className="text-slate-800 font-medium leading-relaxed mb-5 text-justify">
+            <RenderBlocos blocos={blocosEnunciadoInferior} imagensGrandes />
+          </div>
         )}
 
         <div className="space-y-2.5">

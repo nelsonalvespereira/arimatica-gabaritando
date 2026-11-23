@@ -413,7 +413,7 @@ export default function AdminNovaQuestao() {
               <div className="p-5 space-y-4">
                 {/* 1. Enunciado Superior */}
                 <p className="text-slate-800 font-medium leading-relaxed text-justify">
-                  <RenderBlocos blocos={blocosEnunciadoSuperior} placeholder="O texto superior aparece aqui..." />
+                  <RenderBlocos blocos={blocosEnunciadoSuperior} imagensGrandes placeholder="O texto superior aparece aqui..." />
                 </p>
 
                 {/* 2. Imagem / Tabela no Meio */}
@@ -426,7 +426,7 @@ export default function AdminNovaQuestao() {
                 {/* 3. Enunciado Inferior */}
                 {blocosEnunciadoInferior.length > 0 && (
                   <p className="text-slate-800 font-medium leading-relaxed text-justify">
-                    <RenderBlocos blocos={blocosEnunciadoInferior} placeholder="A pergunta final aparece aqui..." />
+                    <RenderBlocos blocos={blocosEnunciadoInferior} imagensGrandes placeholder="A pergunta final aparece aqui..." />
                   </p>
                 )}
 

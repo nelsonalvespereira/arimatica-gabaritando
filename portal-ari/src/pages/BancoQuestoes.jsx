@@ -475,7 +475,7 @@ export default function BancoQuestoes() {
                       {/* ENUNCIADO SEGURO (Exibe blocos ou texto puro caso venham em colunas diferentes) */}
                       {questaoAtual.blocos_enunciado && questaoAtual.blocos_enunciado.length > 0 ? (
                         <div className="text-slate-800 font-medium leading-relaxed md:text-justify text-[15px] md:text-base">
-                          <RenderBlocos blocos={questaoAtual.blocos_enunciado} />
+                          <RenderBlocos blocos={questaoAtual.blocos_enunciado} imagensGrandes />
                         </div>
                       ) : questaoAtual.enunciado ? (
                         <p className="text-slate-800 font-medium leading-relaxed md:text-justify whitespace-pre-wrap text-[15px] md:text-base">
@@ -493,6 +493,13 @@ export default function BancoQuestoes() {
                               className="max-h-72 w-auto object-contain rounded-xl mx-auto"
                             />
                           </div>
+                        </div>
+                      )}
+
+                      {/* Enunciado inferior (pergunta final, abaixo do gráfico) */}
+                      {questaoAtual.blocos_enunciado_inferior?.length > 0 && (
+                        <div className="text-slate-800 font-medium leading-relaxed md:text-justify text-[15px] md:text-base">
+                          <RenderBlocos blocos={questaoAtual.blocos_enunciado_inferior} imagensGrandes />
                         </div>
                       )}
 

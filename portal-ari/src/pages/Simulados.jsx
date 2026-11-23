@@ -374,7 +374,7 @@ export default function Simulados() {
                     <div className="select-none" onCopy={(e) => e.preventDefault()} onContextMenu={(e) => e.preventDefault()}>
                       <p className="text-lg text-slate-800 leading-relaxed font-medium mb-6 text-justify">
                         {questao.blocos_enunciado?.length > 0 ? (
-                          <RenderBlocos blocos={questao.blocos_enunciado} imgHeight="h-20" />
+                          <RenderBlocos blocos={questao.blocos_enunciado} imagensGrandes />
                         ) : (
                           questao.enunciado
                         )}
@@ -382,6 +382,13 @@ export default function Simulados() {
 
                       {questao.imagem_url && (
                         <img src={questao.imagem_url} alt="Ilustração" className="rounded-xl border border-slate-200 max-h-72 mx-auto mb-6 object-contain" />
+                      )}
+
+                      {/* Enunciado inferior (pergunta final, abaixo do gráfico) */}
+                      {questao.blocos_enunciado_inferior?.length > 0 && (
+                        <div className="text-lg text-slate-800 leading-relaxed font-medium mb-6 text-justify">
+                          <RenderBlocos blocos={questao.blocos_enunciado_inferior} imagensGrandes />
+                        </div>
                       )}
 
                       {/* ALTERNATIVAS */}

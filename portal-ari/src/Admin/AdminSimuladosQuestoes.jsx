@@ -368,6 +368,7 @@ export default function AdminSimuladosQuestoes() {
               dificuldade={questaoVisualizando.dificuldade}
               enunciado={questaoVisualizando.enunciado}
               blocosEnunciado={questaoVisualizando.blocos_enunciado}
+              blocosEnunciadoInferior={questaoVisualizando.blocos_enunciado_inferior}
               imagemUrl={questaoVisualizando.imagem_url}
               alternativas={questaoVisualizando.alternativas || []}
               respostaCorreta={questaoVisualizando.resposta_correta}
@@ -425,6 +426,7 @@ export default function AdminSimuladosQuestoes() {
                       dificuldade={q.dificuldade}
                       enunciado={q.enunciado}
                       blocosEnunciado={q.blocos_enunciado}
+                      blocosEnunciadoInferior={q.blocos_enunciado_inferior}
                       imagemUrl={q.imagem_url}
                       alternativas={q.alternativas || []}
                       respostaCorreta={q.resposta_correta}

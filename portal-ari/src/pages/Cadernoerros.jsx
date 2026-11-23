@@ -152,6 +152,7 @@ export default function CadernoErros() {
               dificuldade={questaoAberta.dificuldade}
               enunciado={questaoAberta.enunciado}
               blocosEnunciado={questaoAberta.blocos_enunciado}
+              blocosEnunciadoInferior={questaoAberta.blocos_enunciado_inferior}
               imagemUrl={questaoAberta.imagem_url}
               alternativas={questaoAberta.alternativas || []}
               respostaCorreta={questaoAberta.resposta_correta}
