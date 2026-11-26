@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { AuthProvider } from './hooks/useAuth';
@@ -30,6 +30,8 @@ import AdminDashboard from './Admin/AdminDashboard';
 import AdminConfiguracoes from './Admin/AdminConfiguracoes';
 import AdminAlunos from './Admin/AdminAlunos';
 import AdminSimuladosQuestoes from './Admin/AdminSimuladosQuestoes';
+// Carregada só quando o admin abre (traz o leitor de PDF, que é pesado).
+const AdminImportarQuestoes = lazy(() => import('./Admin/AdminImportarQuestoes'));
 import AdminEditarQuestao from './Admin/AdminEditarQuestao';
 import AdminAulasLives from './Admin/AdminAulasLives';
 import AdminLiveController from './Admin/AdminLiveController';
@@ -95,6 +97,7 @@ function App() {
           <Route path="/admin/configuracoes" element={<AdminRoute><AdminConfiguracoes /></AdminRoute>} />
           <Route path="/admin/alunos" element={<AdminRoute><AdminAlunos /></AdminRoute>} />
           <Route path="/admin/simulados-questoes" element={<AdminRoute><AdminSimuladosQuestoes /></AdminRoute>} />
+          <Route path="/admin/importar-pdf" element={<AdminRoute><Suspense fallback={<div className="p-8 text-slate-500">Carregando…</div>}><AdminImportarQuestoes /></Suspense></AdminRoute>} />
           <Route path="/admin/aulas-lives" element={<AdminRoute><AdminAulasLives /></AdminRoute>} />
           <Route path="/admin/modulos" element={<AdminRoute><AdminModulos /></AdminRoute>} />
           <Route path="/admin/live-control/:id" element={<AdminRoute><AdminLiveController /></AdminRoute>} />

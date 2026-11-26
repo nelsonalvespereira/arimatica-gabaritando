@@ -28,7 +28,11 @@ export async function processarBlocos(supabase, blocos, turmaId, prefixo) {
         const { data } = supabase.storage.from('questoes_imagens').getPublicUrl(filePath);
         return { tipo: 'imagem', valor: data.publicUrl };
       }
-      return { tipo: bloco.tipo, valor: bloco.valor };
+      // Mantém os campos extras de tabela (cabecalho) e de imagem importada (tamanho).
+      const pronto = { tipo: bloco.tipo, valor: bloco.valor };
+      if (bloco.cabecalho) pronto.cabecalho = bloco.cabecalho;
+      if (bloco.tamanho) pronto.tamanho = bloco.tamanho;
+      return pronto;
     })
   );
 }
@@ -37,5 +41,5 @@ export async function processarBlocos(supabase, blocos, turmaId, prefixo) {
 // coluna "enunciado"/"texto" preenchida (busca e listagem continuam
 // funcionando mesmo pra questões feitas com blocos).
 export function blocosParaTexto(blocos) {
-  return blocos.map((b) => (b.tipo === 'texto' ? b.valor : '[IMAGEM]')).join(' ').trim();
+  return blocos.map((b) => (b.tipo === 'texto' ? b.valor : b.tipo === 'tabela' ? '[TABELA]' : '[IMAGEM]')).join(' ').trim();
 }

@@ -5,6 +5,7 @@ import {
   ArrowLeft, Lock, ChevronLeft, ChevronRight, PanelRightClose, PanelRightOpen, Info, Package, LayoutDashboard,
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import ChatLivePack from '../components/ChatLivePack';
 import PlayerProtegido from '../components/PlayerProtegido';
 import AvisoInstalarApp from '../components/AvisoInstalarApp';
 import { usePackDetalhe, usePackItens, useRestante } from '../hooks/usePack';
@@ -324,6 +325,17 @@ export default function Pack() {
                     </div>
                   )}
                 </div>
+
+                {/* Chat: só enquanto a live do pack está acontecendo */}
+                {atual.tipo === 'live' && statusAtual === 'ao_vivo' && (
+                  <ChatLivePack
+                    key={atual.id}
+                    itemId={atual.id}
+                    userId={user?.id}
+                    ehAdmin={ehAdmin}
+                    className="mt-5 md:mt-6 h-[420px]"
+                  />
+                )}
 
                 {/* Sobre + material */}
                 <div className="mt-5 md:mt-6 bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5">

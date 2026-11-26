@@ -37,14 +37,25 @@ export default function BlocoEditor({ blocos, onChange, compact = false }) {
           {!compact && <span className="text-xs font-bold text-slate-400 w-5 shrink-0">#{index + 1}</span>}
 
           {bloco.tipo === 'texto' ? (
-            <input
-              type="text"
+            <textarea
               required
+              rows={Math.min(8, Math.max(1, Math.ceil((bloco.valor || '').length / 90) + ((bloco.valor || '').match(/\n/g) || []).length))}
               value={bloco.valor}
               onChange={(e) => atualizar(bloco.id, { valor: e.target.value })}
-              placeholder="Trecho de texto..."
-              className={`flex-1 ${inputPad} bg-white border border-slate-200 rounded-lg outline-none focus:border-brand-orange`}
+              placeholder="Trecho de texto... (fórmula entre $, ex.: $x^2$)"
+              className={`flex-1 ${inputPad} bg-white border border-slate-200 rounded-lg outline-none focus:border-brand-orange resize-y`}
             />
+          ) : bloco.tipo === 'tabela' ? (
+            <div className="flex-1">
+              <textarea
+                rows={Math.min(8, Math.max(2, (bloco.valor || '').split('\n').length))}
+                value={bloco.valor}
+                onChange={(e) => atualizar(bloco.id, { valor: e.target.value })}
+                aria-label="Tabela"
+                className={`w-full ${inputPad} font-mono bg-white border border-slate-200 rounded-lg outline-none focus:border-brand-orange resize-y`}
+              />
+              <p className="text-[11px] text-slate-400">Tabela: uma linha por linha, células separadas por |</p>
+            </div>
           ) : (
             <div className="flex-1 flex items-center gap-2">
               {!bloco.valor ? (

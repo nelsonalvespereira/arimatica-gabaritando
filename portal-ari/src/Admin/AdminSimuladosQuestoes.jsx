@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Plus, MoreHorizontal, ChevronDown, FileQuestion, ClipboardList, Loader2, Trash2, Eye, X, Edit, ListOrdered } from 'lucide-react';
+import { Search, Plus, MoreHorizontal, ChevronDown, FileQuestion, ClipboardList, Loader2, Trash2, Eye, X, Edit, ListOrdered, Sparkles } from 'lucide-react';
 import AdminSidebar from './AdminSidebar';
 import { useAdminQuestoes, useAdminSimulados, useTurmas } from '../hooks/useAdmin';
 import { buscarQuestoesDoSimulado } from '../hooks/useSimulados';
@@ -130,6 +130,15 @@ export default function AdminSimuladosQuestoes() {
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
               </div>
+
+              {aba === 'questoes' && (
+                <Link
+                  to="/admin/importar-pdf"
+                  className="flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-slate-200 hover:border-brand-orange hover:text-brand-orange text-slate-700 font-bold text-sm rounded-xl transition-colors shrink-0"
+                >
+                  <Sparkles className="w-4 h-4" /> Importar PDF (IA)
+                </Link>
+              )}
 
               {aba === 'questoes' && (
                 <button

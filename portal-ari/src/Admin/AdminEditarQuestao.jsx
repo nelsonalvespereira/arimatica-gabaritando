@@ -9,6 +9,15 @@ import { criarBloco, processarBlocos, blocosParaTexto } from '../lib/blocos';
 import { useAvisos } from '../components/Avisos';
 const LETRAS = ['A', 'B', 'C', 'D', 'E'];
 
+// Blocos salvos no banco não têm id; o editor precisa de um id por bloco
+// (sem isso, mexer em um bloco de texto mudava todos os outros).
+const comIds = (blocos) =>
+  (blocos || []).map((b) => ({
+    ...b,
+    id: b.id ?? (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`),
+    file: null,
+  }));
+
 export default function AdminEditarQuestao() {
   const avisos = useAvisos();
   const { id } = useParams(); // Pega o ID da questão na URL
@@ -67,13 +76,13 @@ export default function AdminEditarQuestao() {
           setBanca(qData.banca || 'Inédita');
 
           if (qData.blocos_enunciado && qData.blocos_enunciado.length > 0) {
-            setBlocosEnunciado(qData.blocos_enunciado);
+            setBlocosEnunciado(comIds(qData.blocos_enunciado));
           } else if (qData.enunciado) {
-            setBlocosEnunciado([{ id: Date.now(), tipo: 'texto', conteudo: qData.enunciado }]);
+            setBlocosEnunciado(comIds([{ tipo: 'texto', valor: qData.enunciado }]));
           }
 
           if (Array.isArray(qData.blocos_enunciado_inferior) && qData.blocos_enunciado_inferior.length > 0) {
-            setBlocosEnunciadoInferior(qData.blocos_enunciado_inferior);
+            setBlocosEnunciadoInferior(comIds(qData.blocos_enunciado_inferior));
           }
 
           if (qData.imagem_url) {
@@ -84,8 +93,8 @@ export default function AdminEditarQuestao() {
             const mapAlts = {};
             qData.alternativas.forEach((alt) => {
               mapAlts[alt.letra] = alt.blocos && alt.blocos.length > 0
-                ? alt.blocos
-                : [{ id: Date.now(), tipo: 'texto', conteudo: alt.texto || '' }];
+                ? comIds(alt.blocos)
+                : comIds([{ tipo: 'texto', valor: alt.texto || '' }]);
             });
             setAlternativasBlocos(mapAlts);
           }
