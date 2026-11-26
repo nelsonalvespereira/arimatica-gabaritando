@@ -8,6 +8,7 @@
 import * as pdfjsLib from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { supabase } from './supabaseClient';
+import { montarLotes } from './selecaoQuestoes';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl;
 
@@ -64,16 +65,15 @@ export function imagemComGrade(canvas) {
   return c.toDataURL('image/jpeg', 0.82).split(',')[1];
 }
 
-// Lotes: extrai as páginas de 2 em 2, com a página seguinte como contexto
-// (questão que continua na página seguinte). `paginas` = números das páginas escolhidas.
-function montarLotes(paginas) {
-  const lotes = [];
-  for (let i = 0; i < paginas.length; i += 2) {
-    const extrair = paginas.slice(i, i + 2);
-    const contexto = paginas[i + 2] ? [paginas[i + 2]] : [];
-    lotes.push({ extrair, contexto });
+// Texto de cada página (para achar onde cada questão começa). textos[i] = página i + 1.
+export async function textosDasPaginas(pdf) {
+  const textos = [];
+  for (let n = 1; n <= pdf.numPages; n += 1) {
+    const pagina = await pdf.getPage(n);
+    const conteudo = await pagina.getTextContent();
+    textos.push(conteudo.items.map((it) => it.str).join(' '));
   }
-  return lotes;
+  return textos;
 }
 
 async function chamarFuncao(paginas) {
@@ -91,7 +91,7 @@ async function chamarFuncao(paginas) {
 // paginas = números das páginas a ler (padrão: todas). onProgresso({ feitos, total }).
 export async function lerPdfComIA(imagensGrade, onProgresso, concorrencia = 3, paginas = null) {
   const escolhidas = paginas ?? imagensGrade.map((_, i) => i + 1);
-  const lotes = montarLotes(escolhidas);
+  const lotes = montarLotes(escolhidas, imagensGrade.length);
   const resultados = new Array(lotes.length);
   let feitos = 0;
   let proximo = 0;

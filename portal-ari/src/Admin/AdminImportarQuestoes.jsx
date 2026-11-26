@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  FileUp, Loader2, ArrowLeft, Crop, Trash2, Eye, EyeOff, AlertTriangle, CheckCircle2, Sparkles, X,
+  FileUp, Loader2, ArrowLeft, Crop, Trash2, Eye, EyeOff, AlertTriangle, CheckCircle2, Sparkles, X, Plus, FileText,
 } from 'lucide-react';
 import AdminSidebar from './AdminSidebar';
 import { useTurmas } from '../hooks/useAdmin';
@@ -10,8 +10,12 @@ import { useAvisos } from '../components/Avisos';
 import RenderBlocos from '../components/RenderBlocos';
 import { ordemDaArvore } from '../lib/ordemQuestoes';
 import {
-  abrirPdf, renderizarPagina, imagemComGrade, lerPdfComIA, mesclarResultados, recortar, canvasParaBlob,
+  abrirPdf, renderizarPagina, imagemComGrade, lerPdfComIA, mesclarResultados, recortar, canvasParaBlob, textosDasPaginas,
 } from '../lib/importarPdf';
+import { lerNumeros, acharPaginas, montarLotes } from '../lib/selecaoQuestoes';
+
+let proximaFonte = 1;
+const novaFonte = () => ({ id: proximaFonte++, arquivo: null, totalPaginas: 0, numeros: '', de: 1, ate: 1, erro: '' });
 
 const DIFICULDADES = [
   { valor: 'facil', rotulo: 'Fácil' },
@@ -128,6 +132,7 @@ function RevisaoQuestao({ q, canvases, onMudar, onAjustar }) {
           <input type="checkbox" checked={q.incluir} onChange={(e) => mudar('incluir', e.target.checked)} className="w-4 h-4 accent-brand-orange" />
           <span className="inline-flex items-center justify-center min-w-7 h-6 px-1.5 rounded-md bg-brand-orange text-white text-xs font-black">{q.numero}</span>
         </label>
+        {q.fonteNome && <span className="text-xs font-medium text-slate-500 max-w-48 truncate" title={q.fonteNome}>{q.fonteNome}</span>}
         <input value={q.banca} onChange={(e) => mudar('banca', e.target.value)} placeholder="Banca" className="w-36 px-2 py-1 text-sm border border-slate-200 rounded-md" aria-label="Banca" />
         <select value={q.dificuldade} onChange={(e) => mudar('dificuldade', e.target.value)} className="px-2 py-1 text-sm border border-slate-200 rounded-md" aria-label="Dificuldade">
           {DIFICULDADES.map((d) => <option key={d.valor} value={d.valor}>{d.rotulo}</option>)}
@@ -212,14 +217,12 @@ export default function AdminImportarQuestoes() {
   const turmas = useMemo(() => [...turmasBrutas].sort((a, b) => String(a.nome).localeCompare(String(b.nome))), [turmasBrutas]);
 
   const [turmaId, setTurmaId] = useState('');
-  const [arquivo, setArquivo] = useState(null);
-  const [totalPaginas, setTotalPaginas] = useState(0);
-  const [paginaDe, setPaginaDe] = useState(1);
-  const [paginaAte, setPaginaAte] = useState(1);
+  const [fontes, setFontes] = useState(() => [novaFonte()]); // um item por PDF
+  const [avisoLeitura, setAvisoLeitura] = useState('');
   const [etapa, setEtapa] = useState('escolher'); // escolher | lendo | revisar | salvando
   const [progresso, setProgresso] = useState('');
   const [erro, setErro] = useState('');
-  const [canvases, setCanvases] = useState([]);
+  const [canvasesPorFonte, setCanvasesPorFonte] = useState([]); // [fonte][página - 1]
   const [lista, setLista] = useState({ titulo: '', subtitulo: '' });
   const [questoes, setQuestoes] = useState([]);
   const [uso, setUso] = useState(null);
@@ -235,52 +238,103 @@ export default function AdminImportarQuestoes() {
       .then(({ data }) => setAssuntos(data || []));
   }, [turmaId]);
 
-  // Ao escolher o arquivo, descobre quantas páginas ele tem (para o intervalo de páginas).
-  const escolherArquivo = async (file) => {
-    setArquivo(file);
-    setErro('');
-    setTotalPaginas(0);
+  const mudarFonte = (id, campos) => setFontes((fs) => fs.map((f) => (f.id === id ? { ...f, ...campos } : f)));
+
+  // Ao escolher o arquivo, descobre quantas páginas ele tem.
+  const escolherArquivo = async (id, file) => {
+    mudarFonte(id, { arquivo: file, totalPaginas: 0, erro: '' });
     if (!file) return;
     try {
       const pdf = await abrirPdf(file);
-      setTotalPaginas(pdf.numPages);
-      setPaginaDe(1);
-      setPaginaAte(pdf.numPages);
+      mudarFonte(id, { totalPaginas: pdf.numPages, de: 1, ate: pdf.numPages });
     } catch {
-      setErro('Não foi possível abrir este PDF.');
+      mudarFonte(id, { erro: 'Não foi possível abrir este PDF.' });
     }
   };
 
+  const fontesProntas = fontes.filter((f) => f.arquivo && f.totalPaginas);
+
+  // Lê todos os PDFs. Em cada um: só as questões pedidas (pelo número) ou o intervalo de páginas.
   const ler = async () => {
-    if (!arquivo || !turmaId) return;
+    if (!fontesProntas.length || !turmaId) return;
     setErro('');
+    setAvisoLeitura('');
     setEtapa('lendo');
     try {
-      setProgresso('Abrindo o PDF…');
-      const pdf = await abrirPdf(arquivo);
-      const de = Math.max(1, Math.min(paginaDe, pdf.numPages));
-      const ate = Math.max(de, Math.min(paginaAte, pdf.numPages));
-      const paginas = Array.from({ length: ate - de + 1 }, (_, i) => de + i);
-      if (paginas.length > 40) throw new Error('Escolha no máximo 40 páginas por vez.');
-      // Índice = número da página - 1 (as páginas fora do intervalo ficam vazias).
-      const telas = new Array(pdf.numPages).fill(null);
-      const grades = new Array(pdf.numPages).fill(null);
-      for (let k = 0; k < paginas.length; k += 1) {
-        const n = paginas[k];
-        setProgresso(`Preparando as páginas (${k + 1} de ${paginas.length})…`);
-        const c = await renderizarPagina(pdf, n);
-        telas[n - 1] = c;
-        grades[n - 1] = imagemComGrade(c);
+      const telasPorFonte = [];
+      const todas = [];
+      const alertas = [];
+      const usoTotal = { entrada: 0, saida: 0 };
+      let algumCortado = false;
+      let tituloSugerido = '';
+
+      for (let fi = 0; fi < fontesProntas.length; fi += 1) {
+        const f = fontesProntas[fi];
+        const nome = f.arquivo.name.replace(/\.pdf$/i, '');
+        const prefixo = fontesProntas.length > 1 ? `PDF ${fi + 1} de ${fontesProntas.length} — ` : '';
+        setProgresso(`${prefixo}Abrindo ${nome}…`);
+        const pdf = await abrirPdf(f.arquivo);
+        const numeros = lerNumeros(f.numeros);
+
+        // Quais páginas mandar para a IA.
+        let paginas;
+        let naoAchadas = [];
+        if (numeros.length) {
+          setProgresso(`${prefixo}Procurando as questões ${f.numeros.trim()}…`);
+          const { pagina, faltando } = acharPaginas(await textosDasPaginas(pdf), numeros);
+          if (faltando.length === numeros.length) {
+            throw new Error(`${nome}: não achei nenhuma das questões (${f.numeros.trim()}) no texto do PDF. Se o PDF for escaneado, deixe o campo de números vazio e escolha as páginas.`);
+          }
+          naoAchadas = faltando;
+          if (faltando.length) alertas.push(`${nome}: não achei no PDF a(s) questão(ões) ${faltando.join(', ')}.`);
+          paginas = Object.values(pagina);
+        } else {
+          const de = Math.max(1, Math.min(f.de, pdf.numPages));
+          const ate = Math.max(de, Math.min(f.ate, pdf.numPages));
+          paginas = Array.from({ length: ate - de + 1 }, (_, k) => de + k);
+        }
+
+        // Desenha as páginas que vão para a IA (mais a seguinte de cada lote, como contexto).
+        const lotes = montarLotes(paginas, pdf.numPages);
+        const desenhar = [...new Set(lotes.flatMap((l) => [...l.extrair, ...l.contexto]))].sort((a, b) => a - b);
+        if (desenhar.length > 40) throw new Error(`${nome}: são páginas demais de uma vez (máximo de 40). Divida em partes.`);
+        const telas = new Array(pdf.numPages).fill(null);
+        const grades = new Array(pdf.numPages).fill(null);
+        for (let k = 0; k < desenhar.length; k += 1) {
+          const n = desenhar[k];
+          setProgresso(`${prefixo}Preparando as páginas (${k + 1} de ${desenhar.length})…`);
+          const c = await renderizarPagina(pdf, n);
+          telas[n - 1] = c;
+          grades[n - 1] = imagemComGrade(c);
+        }
+        telasPorFonte[fi] = telas;
+
+        const resultados = await lerPdfComIA(grades, ({ feitos, total }) =>
+          setProgresso(`${prefixo}Lendo as questões com IA (${feitos} de ${total} partes)… pode levar alguns minutos.`), 3, paginas);
+        const r = mesclarResultados(resultados);
+        usoTotal.entrada += r.uso.entrada;
+        usoTotal.saida += r.uso.saida;
+        algumCortado = algumCortado || r.cortado;
+        if (!tituloSugerido) tituloSugerido = r.titulo || '';
+
+        let doPdf = r.questoes;
+        if (numeros.length) {
+          // Só as pedidas, na ordem em que foram digitadas.
+          const porNumero = new Map(doPdf.map((q) => [q.numero, q]));
+          const naoVieram = numeros.filter((n) => !porNumero.has(n) && !naoAchadas.includes(n));
+          if (naoVieram.length) alertas.push(`${nome}: a IA não trouxe a(s) questão(ões) ${naoVieram.join(', ')}.`);
+          doPdf = numeros.filter((n) => porNumero.has(n)).map((n) => porNumero.get(n));
+        }
+        doPdf.forEach((q) => todas.push({ ...q, fonte: fi, fonteNome: nome, chave: `${fi}-${q.numero}` }));
       }
-      setCanvases(telas);
-      const resultados = await lerPdfComIA(grades, ({ feitos, total }) =>
-        setProgresso(`Lendo as questões com IA (${feitos} de ${total} partes)… pode levar alguns minutos.`), 3, paginas);
-      const r = mesclarResultados(resultados);
-      if (!r.questoes.length) throw new Error('Nenhuma questão encontrada nessas páginas.');
-      setLista({ titulo: r.titulo || arquivo.name.replace(/\.pdf$/i, ''), subtitulo: r.subtitulo || '' });
-      setQuestoes(r.questoes);
-      setUso(r.uso);
-      setCortado(r.cortado);
+
+      if (!todas.length) throw new Error('Nenhuma questão encontrada.');
+      setCanvasesPorFonte(telasPorFonte);
+      setLista({ titulo: fontesProntas.length === 1 ? (tituloSugerido || fontesProntas[0].arquivo.name.replace(/\.pdf$/i, '')) : '', subtitulo: '' });
+      setQuestoes(todas);
+      setUso(usoTotal);
+      setCortado(algumCortado);
+      setAvisoLeitura(alertas.join(' '));
       setEtapa('revisar');
     } catch (e) {
       console.error(e);
@@ -303,8 +357,8 @@ export default function AdminImportarQuestoes() {
   const semResposta = incluidas.filter((q) => !q.resposta);
   const custo = uso ? (uso.entrada / 1e6) * PRECO.entrada + (uso.saida / 1e6) * PRECO.saida : 0;
 
-  const enviarFigura = async (regiao, rotulo) => {
-    const c = recortar(canvases[regiao.pagina - 1], regiao);
+  const enviarFigura = async (fonte, regiao, rotulo) => {
+    const c = recortar(canvasesPorFonte[fonte][regiao.pagina - 1], regiao);
     const blob = await canvasParaBlob(c);
     const caminho = `${turmaId}/importadas/${Date.now()}-${rotulo}-${Math.random().toString(36).slice(2, 7)}.png`;
     const { error } = await supabase.storage.from('questoes_imagens').upload(caminho, blob, { contentType: 'image/png' });
@@ -315,7 +369,10 @@ export default function AdminImportarQuestoes() {
   const salvar = async () => {
     if (assuntoId === 'novo' && !lista.titulo.trim()) return avisos.erro('Dê um nome ao assunto novo.');
     if (!incluidas.length) return avisos.erro('Nenhuma questão marcada para importar.');
-    if (semResposta.length) return avisos.erro(`Falta a resposta das questões ${semResposta.map((q) => q.numero).join(', ')}.`);
+    if (semResposta.length) {
+      const varios = new Set(incluidas.map((q) => q.fonte)).size > 1;
+      return avisos.erro(`Falta a resposta das questões ${semResposta.map((q) => (varios ? `${q.numero} (${q.fonteNome})` : q.numero)).join(', ')}.`);
+    }
     setEtapa('salvando');
     let salvas = 0;
     try {
@@ -337,13 +394,13 @@ export default function AdminImportarQuestoes() {
         const blocos = [];
         let k = 0;
         for (const b of q.enunciado) {
-          if (b.tipo === 'figura' && b.regiao) blocos.push({ tipo: 'imagem', valor: await enviarFigura(b.regiao, `q${q.numero}-${k++}`) });
+          if (b.tipo === 'figura' && b.regiao) blocos.push({ tipo: 'imagem', valor: await enviarFigura(q.fonte, b.regiao, `p${q.fonte}q${q.numero}-${k++}`) });
           else if (b.tipo === 'tabela') blocos.push({ tipo: 'tabela', valor: b.texto || '', cabecalho: b.cabecalho || 'linha' });
           else if ((b.texto || '').trim()) blocos.push({ tipo: 'texto', valor: b.texto.trim() });
         }
         const alternativas = [];
         for (const a of q.alternativas) {
-          if (a.regiao) alternativas.push({ letra: a.letra, texto: '[FIGURA]', blocos: [{ tipo: 'imagem', tamanho: 'm', valor: await enviarFigura(a.regiao, `q${q.numero}${a.letra}`) }] });
+          if (a.regiao) alternativas.push({ letra: a.letra, texto: '[FIGURA]', blocos: [{ tipo: 'imagem', tamanho: 'm', valor: await enviarFigura(q.fonte, a.regiao, `p${q.fonte}q${q.numero}${a.letra}`) }] });
           else alternativas.push({ letra: a.letra, texto: a.texto, blocos: [{ tipo: 'texto', valor: a.texto }] });
         }
         const enunciadoTexto = blocos.map((b) => (b.tipo === 'texto' ? b.valor : b.tipo === 'tabela' ? '[TABELA]' : '[IMAGEM]')).join(' ');
@@ -402,26 +459,60 @@ export default function AdminImportarQuestoes() {
                   {turmas.map((t) => <option key={t.id} value={t.id}>{t.nome}</option>)}
                 </select>
               </label>
-              <label className="block">
-                <span className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Arquivo PDF com as questões</span>
-                <input type="file" accept="application/pdf" disabled={etapa === 'lendo'} onChange={(e) => escolherArquivo(e.target.files?.[0] || null)} className="block text-sm" />
-              </label>
-              {totalPaginas > 0 && (
-                <fieldset className="block" disabled={etapa === 'lendo'}>
-                  <legend className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Páginas para ler</legend>
-                  <div className="flex items-center gap-2 text-sm text-slate-700 flex-wrap">
-                    <span>Da página</span>
-                    <input type="number" min={1} max={totalPaginas} value={paginaDe} onChange={(e) => setPaginaDe(Number(e.target.value) || 1)} aria-label="Da página" className="w-20 px-2 py-1.5 border border-slate-200 rounded-lg" />
-                    <span>até a</span>
-                    <input type="number" min={1} max={totalPaginas} value={paginaAte} onChange={(e) => setPaginaAte(Number(e.target.value) || 1)} aria-label="Até a página" className="w-20 px-2 py-1.5 border border-slate-200 rounded-lg" />
-                    <span className="text-slate-500">de {totalPaginas}</span>
-                  </div>
-                  <p className="text-xs text-slate-500 mt-1">Num simulado com várias matérias, escolha só as páginas de Matemática: fica mais rápido e gasta menos crédito da IA (máximo de 40 páginas por vez).</p>
-                </fieldset>
-              )}
+              <div className="space-y-3">
+                <span className="block text-xs font-bold text-slate-700 uppercase tracking-wider">PDFs e questões</span>
+                {fontes.map((f, fi) => (
+                  <fieldset key={f.id} disabled={etapa === 'lendo'} className="border border-slate-200 rounded-xl p-4 space-y-3 bg-slate-50/60">
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-brand-orange shrink-0" />
+                      <legend className="text-sm font-bold text-slate-800">PDF {fi + 1}</legend>
+                      {fontes.length > 1 && (
+                        <button type="button" onClick={() => setFontes((fs) => fs.filter((x) => x.id !== f.id))} className="ml-auto p-1.5 text-red-400 hover:text-red-600" aria-label={`Tirar o PDF ${fi + 1}`}>
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                    <input type="file" accept="application/pdf" onChange={(e) => escolherArquivo(f.id, e.target.files?.[0] || null)} aria-label={`Arquivo do PDF ${fi + 1}`} className="block text-sm" />
+                    {f.erro && <p className="text-sm text-red-700">{f.erro}</p>}
+                    {f.totalPaginas > 0 && (
+                      <>
+                        <label className="block">
+                          <span className="block text-xs font-bold text-slate-700 mb-1">Números das questões que você quer (opcional)</span>
+                          <input
+                            value={f.numeros}
+                            onChange={(e) => mudarFonte(f.id, { numeros: e.target.value })}
+                            placeholder="Ex.: 136, 140, 150-153"
+                            className="w-full md:w-96 px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg"
+                          />
+                        </label>
+                        {f.numeros.trim() ? (
+                          <p className="text-xs text-slate-500">
+                            {lerNumeros(f.numeros).length} questão(ões): o sistema acha a página de cada uma e manda só essas páginas para a IA.
+                          </p>
+                        ) : (
+                          <div className="flex items-center gap-2 text-sm text-slate-700 flex-wrap">
+                            <span>Ou ler da página</span>
+                            <input type="number" min={1} max={f.totalPaginas} value={f.de} onChange={(e) => mudarFonte(f.id, { de: Number(e.target.value) || 1 })} aria-label={`Da página (PDF ${fi + 1})`} className="w-20 px-2 py-1.5 bg-white border border-slate-200 rounded-lg" />
+                            <span>até a</span>
+                            <input type="number" min={1} max={f.totalPaginas} value={f.ate} onChange={(e) => mudarFonte(f.id, { ate: Number(e.target.value) || 1 })} aria-label={`Até a página (PDF ${fi + 1})`} className="w-20 px-2 py-1.5 bg-white border border-slate-200 rounded-lg" />
+                            <span className="text-slate-500">de {f.totalPaginas}</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </fieldset>
+                ))}
+                <button type="button" onClick={() => setFontes((fs) => [...fs, novaFonte()])} disabled={etapa === 'lendo'} className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-bold text-brand-orange bg-orange-50 hover:bg-orange-100 rounded-lg">
+                  <Plus className="w-4 h-4" /> Adicionar outro PDF
+                </button>
+                <p className="text-xs text-slate-500">
+                  Para montar um assunto com questões de vários simulados (ex.: Estatística), adicione um PDF por simulado e digite os números das questões de cada um.
+                  Sem números, a IA lê as páginas escolhidas (máximo de 40 por PDF).
+                </p>
+              </div>
               <p className="text-xs text-slate-500">Funciona melhor com PDF digital (feito no computador). PDF escaneado também funciona, mas as figuras saem com qualidade de foto.</p>
               {erro && <p className="flex items-start gap-2 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-3"><AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" /> {erro}</p>}
-              <button type="button" onClick={ler} disabled={!arquivo || !turmaId || etapa === 'lendo'} className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-brand-orangeHover disabled:bg-slate-300 text-white text-sm font-bold rounded-xl">
+              <button type="button" onClick={ler} disabled={!fontesProntas.length || !turmaId || etapa === 'lendo'} className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-orange hover:bg-brand-orangeHover disabled:bg-slate-300 text-white text-sm font-bold rounded-xl">
                 {etapa === 'lendo' ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileUp className="w-4 h-4" />}
                 {etapa === 'lendo' ? 'Lendo…' : 'Ler PDF'}
               </button>
@@ -454,17 +545,18 @@ export default function AdminImportarQuestoes() {
                     : <span className="text-emerald-600 font-bold flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> todas com resposta</span>}
                   {uso && <span className="text-slate-500">Custo aproximado desta leitura: US$ {custo.toFixed(2)} ({Math.round(uso.entrada / 1000)} mil tokens de entrada, {Math.round(uso.saida / 1000)} mil de saída)</span>}
                 </div>
+                {avisoLeitura && <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">{avisoLeitura}</p>}
                 {cortado && <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg p-3">Uma parte do PDF tinha questões demais para uma leitura só e pode ter ficado incompleta. Confira se nenhuma questão faltou.</p>}
                 <p className="text-xs text-slate-500">Confira cada questão: o texto, as fórmulas (use “Ver como o aluno vê”), os recortes das figuras e a resposta. Depois de salvar, as questões já aparecem para os alunos no Banco de Questões.</p>
               </section>
 
               {questoes.map((q, idx) => (
                 <RevisaoQuestao
-                  key={q.numero}
+                  key={q.chave}
                   q={q}
-                  canvases={canvases}
+                  canvases={canvasesPorFonte[q.fonte] || []}
                   onMudar={(novo) => setQuestoes((qs) => qs.map((x, j) => (j === idx ? novo : x)))}
-                  onAjustar={(regiao, aplicar) => setAjuste({ canvas: canvases[regiao.pagina - 1], regiao, aplicar })}
+                  onAjustar={(regiao, aplicar) => setAjuste({ canvas: canvasesPorFonte[q.fonte][regiao.pagina - 1], regiao, aplicar })}
                 />
               ))}
 
