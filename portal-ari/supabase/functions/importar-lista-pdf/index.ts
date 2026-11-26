@@ -146,24 +146,33 @@ serve(async (req) => {
     }
     conteudo.push({ type: 'text', text: 'Registre as questões dessas páginas com a ferramenta registrar_questoes.' });
 
-    const resposta = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'x-api-key': chave,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: modelo,
-        max_tokens: 16000,
-        system: INSTRUCOES,
-        tools: [ferramenta],
-        tool_choice: { type: 'tool', name: 'registrar_questoes' },
-        messages: [{ role: 'user', content: conteudo }],
-      }),
-    });
+    // Pede para a IA usar a ferramenta (JSON garantido). Alguns modelos não aceitam
+    // obrigar o uso da ferramenta; nesse caso tenta de novo deixando a IA escolher,
+    // com a instrução explícita de usar a ferramenta.
+    const chamar = (escolha: Record<string, string>) =>
+      fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': chave,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: modelo,
+          max_tokens: 16000,
+          system: INSTRUCOES + '\n\nResponda SEMPRE chamando a ferramenta registrar_questoes, nunca em texto.',
+          tools: [ferramenta],
+          tool_choice: escolha,
+          messages: [{ role: 'user', content: conteudo }],
+        }),
+      });
 
-    const corpo = await resposta.json();
+    let resposta = await chamar({ type: 'tool', name: 'registrar_questoes' });
+    let corpo = await resposta.json();
+    if (!resposta.ok && /tool_choice/i.test(corpo?.error?.message || '')) {
+      resposta = await chamar({ type: 'auto' });
+      corpo = await resposta.json();
+    }
     if (!resposta.ok) {
       const msg = corpo?.error?.message || `Erro ${resposta.status} na API da Anthropic`;
       return json({ error: msg }, 502);

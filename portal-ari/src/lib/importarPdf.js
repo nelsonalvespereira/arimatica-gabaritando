@@ -64,12 +64,13 @@ export function imagemComGrade(canvas) {
   return c.toDataURL('image/jpeg', 0.82).split(',')[1];
 }
 
-// Lotes: extrai as páginas i e i+1, com a i+2 como contexto (questão que continua na página seguinte).
-function montarLotes(total) {
+// Lotes: extrai as páginas de 2 em 2, com a página seguinte como contexto
+// (questão que continua na página seguinte). `paginas` = números das páginas escolhidas.
+function montarLotes(paginas) {
   const lotes = [];
-  for (let i = 1; i <= total; i += 2) {
-    const extrair = [i, i + 1].filter((n) => n <= total);
-    const contexto = i + 2 <= total ? [i + 2] : [];
+  for (let i = 0; i < paginas.length; i += 2) {
+    const extrair = paginas.slice(i, i + 2);
+    const contexto = paginas[i + 2] ? [paginas[i + 2]] : [];
     lotes.push({ extrair, contexto });
   }
   return lotes;
@@ -86,9 +87,11 @@ async function chamarFuncao(paginas) {
   return data;
 }
 
-// Lê todas as páginas com a IA. onProgresso({ feitos, total, etapa }).
-export async function lerPdfComIA(imagensGrade, onProgresso, concorrencia = 3) {
-  const lotes = montarLotes(imagensGrade.length);
+// Lê as páginas escolhidas com a IA. imagensGrade[n - 1] = imagem da página n.
+// paginas = números das páginas a ler (padrão: todas). onProgresso({ feitos, total }).
+export async function lerPdfComIA(imagensGrade, onProgresso, concorrencia = 3, paginas = null) {
+  const escolhidas = paginas ?? imagensGrade.map((_, i) => i + 1);
+  const lotes = montarLotes(escolhidas);
   const resultados = new Array(lotes.length);
   let feitos = 0;
   let proximo = 0;
